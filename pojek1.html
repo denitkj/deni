@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Galeri Proyek Hardware - Pengalaman Praktis TKJ">
+    <title>Hardware Gallery - Agung Deni Prayogo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #06b6d4;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-color: #e5e7eb;
+            --border-light: #f3f4f6;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        [data-theme="dark"] {
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --bg-card: #1e293b;
+            --border-color: #334155;
+            --border-light: #475569;
+            --glass-bg: rgba(30, 41, 59, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: var(--shadow);
+        }
+
+        .lang-toggle {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .back-btn {
+            background: var(--bg-card);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 100px;
+            padding: 2rem 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header Section */
+        .header-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+                var(--bg-secondary);
+            padding: 4rem 2rem;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236366f1' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Filter Section */
+        .filter-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            background: var(--bg-card);
+            border-radius: 50px;
+            padding: 0.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            gap: 0.5rem;
+        }
+
+        .filter-tab {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .filter-tab.active,
+        .filter-tab:hover {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .gallery-item {
+            background: var(--bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            position: relative;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .gallery-item.hidden {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+        }
+
+        .gallery-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover .gallery-image img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(139, 92, 246, 0.8));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-content {
+            padding: 2rem;
+        }
+
+        .gallery-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .gallery-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .gallery-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .gallery-category {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .project-count {
+            background: linear-gradient(135deg, var(--success-color), var(--warning-color));
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .gallery-date {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            background: var(--bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+
+        .modal-close:hover {
+            color: var(--danger-color);
+            background: var(--bg-secondary);
+        }
+
+        .modal-body {
+            padding: 2rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .modal-image {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        /* Image Gallery in Modal */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .gallery-img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-actions {
+                gap: 0.5rem;
+            }
+
+            .back-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .header-section {
+                padding: 3rem 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .filter-tabs {
+                padding: 0.3rem;
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .filter-tab {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
+                flex-shrink: 0;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .gallery-content {
+                padding: 1.5rem;
+            }
+
+            .modal-content {
+                max-width: 95vw;
+                max-height: 95vh;
+            }
+
+            .modal-header {
+                padding: 1rem;
+            }
+
+            .modal-body {
+                padding: 1rem;
+            }
+
+            .breadcrumb {
+                flex-wrap: wrap;
+                font-size: 0.8rem;
+            }
+
+            .image-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">DENI</a>
+            <div class="nav-actions">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    <span data-id="Kembali" data-en="Back">Kembali</span>
+                </a>
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="lang-toggle" onclick="toggleLanguage()">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Header Section -->
+            <section class="header-section">
+                <div class="header-content">
+                    <h1 class="page-title" data-id="Galeri Proyek Hardware & Software" data-en="Hardware & Software Project Gallery">Galeri Proyek Hardware & Software</h1>
+                    <p class="page-subtitle" data-id="Dokumentasi pengalaman praktis dalam perakitan komputer, instalasi sistem, dan pemeliharaan perangkat" data-en="Documentation of practical experience in computer assembly, system installation, and device maintenance">
+                        Dokumentasi pengalaman praktis dalam perakitan komputer, instalasi sistem, dan pemeliharaan perangkat
+                    </p>
+                    <div class="breadcrumb">
+                        <a href="../index.html" data-id="Beranda" data-en="Home">Beranda</a>
+                        <i class="fas fa-chevron-right"></i>
+                        <span data-id="Hardware" data-en="Hardware">Hardware</span>
+                        <i class="fas fa-chevron-right"></i>
+                        <span data-id="Galeri" data-en="Gallery">Galeri</span>
+                    </div>
+                </div>
+            </section>
+
+
+
+            <!-- Gallery Grid -->
+            <section class="gallery-grid" id="galleryGrid">
+                <!-- PC Gaming Assembly -->
+                <div class="gallery-item" data-category="assembly">
+                    <div class="gallery-image">
+                        <img src="https://kreasique.com/wp-content/uploads/2025/08/cara-rakit-pc-gaming.jpg" alt="PC Gaming Assembly" loading="lazy">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-desktop"></i>
+                        </div>
+                    </div>
+                    <div class="gallery-content">
+                        <div class="gallery-meta">
+                            <span class="gallery-category" data-id="Perakitan" data-en="Assembly">Perakitan</span>
+                            <span class="project-count">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-id="4x dikerjakan" data-en="4x completed">15x dikerjakan</span>
+                            </span>
+                        </div>
+                        <h3 class="gallery-title" data-id="Perakitan PC Gaming" data-en="Gaming PC Assembly">Perakitan PC Gaming</h3>
+                        <p class="gallery-description" data-id="Merakit komputer gaming dengan spesifikasi tinggi untuk performa optimal dalam bermain game dan aplikasi berat." data-en="Assembling gaming computers with high specifications for optimal performance in gaming and heavy applications.">
+                            Merakit komputer gaming dengan spesifikasi tinggi untuk performa optimal dalam bermain game dan aplikasi berat.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- PC Office Assembly -->
+                <div class="gallery-item" data-category="assembly">
+                    <div class="gallery-image">
+                        <img src="https://events.rumah123.com/news-content/img/2020/11/23143220/Untitled-design-2020-11-23T143208.155-1024x681.jpg" alt="PC Office Assembly" loading="lazy">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                    </div>
+                    <div class="gallery-content">
+                        <div class="gallery-meta">
+                            <span class="gallery-category" data-id="Perakitan" data-en="Assembly">Perakitan</span>
+                            <span class="project-count">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-id="15x dikerjakan" data-en="15x completed">15x dikerjakan</span>
+                            </span>
+                        </div>
+                        <h3 class="gallery-title" data-id="Perakitan PC Office" data-en="Office PC Assembly">Perakitan PC Office</h3>
+                        <p class="gallery-description" data-id="Merakit komputer untuk kebutuhan kantor dengan fokus pada efisiensi, stabilitas, dan nilai ekonomis yang optimal." data-en="Assembling computers for office needs with focus on efficiency, stability, and optimal economic value.">
+                            Merakit komputer untuk kebutuhan kantor dengan fokus pada efisiensi, stabilitas, dan nilai ekonomis yang optimal.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Windows Installation PC -->
+                <div class="gallery-item" data-category="installation">
+                    <div class="gallery-image">
+                        <img src="https://static.retailworldvn.com/News/1582232/cara-install-ulang-windows-10-1-845x442.jpg" alt="Windows Installation" loading="lazy">
+                        <div class="gallery-overlay">
+                            <i class="fab fa-windows"></i>
+                        </div>
+                    </div>
+                    <div class="gallery-content">
+                        <div class="gallery-meta">
+                            <span class="gallery-category" data-id="Instalasi" data-en="Installation">Instalasi</span>
+                            <span class="project-count">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-id="45x dikerjakan" data-en="45x completed">45x dikerjakan</span>
+                            </span>
+                        </div>
+                        <h3 class="gallery-title" data-id="Instalasi Windows PC&Laptop Pertama Kali" data-en="First-time Windows PC Installation">Instalasi Windows PC&Laptop Pertama Kali</h3>
+                        <p class="gallery-description" data-id="Proses instalasi sistem operasi Windows dari awal pada komputer baru, termasuk partisi, driver, dan software essential." data-en="Process of installing Windows operating system from scratch on new computers, including partitioning, drivers, and essential software.">
+                            Proses instalasi sistem operasi Windows dari awal pada komputer baru, termasuk partisi, driver, dan software essential.
+                        </p>
+                    </div>
+                </div>
+
+
+
+                <!-- Hardware Check New Items -->
+
+
+                <!-- Driver Installation Printer -->
+                <div class="gallery-item" data-category="installation">
+                    <div class="gallery-image">
+                        <img src="https://www.advicescout.com/wp-content/uploads/2023/07/fix-epson-l121-driver-installation-issues-1024x683.png" alt="Printer Driver Installation" loading="lazy">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-download"></i>
+                        </div>
+                    </div>
+                    <div class="gallery-content">
+                        <div class="gallery-meta">
+                            <span class="gallery-category" data-id="Instalasi" data-en="Installation">Instalasi</span>
+                            <span class="project-count">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-id="20x dikerjakan" data-en=20x completed">20x dikerjakan</span>
+                            </span>
+                        </div>
+                        <h3 class="gallery-title" data-id="Instalasi Driver Printer" data-en="Printer Driver Installation">Instalasi Driver Printer</h3>
+                        <p class="gallery-description" data-id="Instalasi driver printer untuk berbagai merk dan model, konfigurasi jaringan, dan pengaturan sharing printer." data-en="Installation of printer drivers for various brands and models, network configuration, and printer sharing settings.">
+                            Instalasi driver printer untuk berbagai merk dan model, konfigurasi jaringan, dan pengaturan sharing printer.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentLang = 'id';
+        let currentTheme = 'light';
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sync theme and language from parent window or localStorage
+            syncSettings();
+            
+            // Initialize components
+            initializeFilter();
+            initializeModal();
+            initializeLanguage();
+            
+            // Apply initial language
+            applyLanguage();
+        });
+
+        // Sync settings from localStorage or parent window
+        function syncSettings() {
+            // Check localStorage for theme
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                document.querySelector('.theme-toggle i').className = 'fas fa-sun';
+                currentTheme = 'dark';
+            }
+
+            // Check localStorage for language
+            const savedLang = localStorage.getItem('language');
+            if (savedLang === 'en') {
+                currentLang = 'en';
+                document.querySelector('.lang-toggle').textContent = 'ID';
+            }
+
+            // Try to sync with parent window if available
+            try {
+                if (window.parent && window.parent !== window) {
+                    const parentTheme = window.parent.document.body.getAttribute('data-theme');
+                    if (parentTheme === 'dark' && currentTheme !== 'dark') {
+                        toggleTheme();
+                    }
+                }
+            } catch (e) {
+                // Cross-origin restrictions, ignore
+            }
+        }
+
+        // Theme toggle function
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.querySelector('.theme-toggle i');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+                currentTheme = 'light';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+                currentTheme = 'dark';
+            }
+        }
+
+        // Language toggle function
+        function toggleLanguage() {
+            const langButton = document.querySelector('.lang-toggle');
+            
+            if (currentLang === 'id') {
+                currentLang = 'en';
+                langButton.textContent = 'ID';
+                localStorage.setItem('language', 'en');
+            } else {
+                currentLang = 'id';
+                langButton.textContent = 'EN';
+                localStorage.setItem('language', 'id');
+            }
+            
+            applyLanguage();
+        }
+
+        // Apply language to all elements
+        function applyLanguage() {
+            const elements = document.querySelectorAll('[data-id][data-en]');
+            elements.forEach(el => {
+                const text = currentLang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-id');
+                if (text) {
+                    el.textContent = text;
+                }
+            });
+        }
+
+        // Initialize language system
+        function initializeLanguage() {
+            // Apply language on initial load
+            if (currentLang === 'en') {
+                applyLanguage();
+            }
+        }
+
+        // Filter functionality
+        function initializeFilter() {
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Filter gallery items
+                    galleryItems.forEach(item => {
+                        const category = item.getAttribute('data-category');
+                        
+   if (filter === 'all' || category === filter) {
+    item.style.display = "block";
+    setTimeout(() => {
+        item.style.opacity = '1';
+        item.style.transform = 'scale(1)';
+    }, 50);
+} else {
+    item.style.opacity = '0';
+    item.style.transform = 'scale(0.8)';
+    setTimeout(() => {
+        item.style.display = "none";
+    }, 300);
+}
+
+                    });
+                });
+            });
+        }
+
+        // Modal functionality
+        function initializeModal() {
+            const modal = document.getElementById('modal');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            
+            // Add click listeners to gallery items
+            galleryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const title = this.querySelector('.gallery-title').textContent;
+                    const description = this.querySelector('.gallery-description').textContent;
+                    const imageSrc = this.querySelector('.gallery-image img').src;
+                    
+                    openModal(title, description, imageSrc);
+                });
+            });
+            
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        }
+
+        // Open modal with specific content
+        function openModal(title, description, imageSrc) {
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalTitle.textContent = title;
+            
+            // Create modal content with just image and description
+            let modalContent = `
+                <div class="image-gallery">
+                    <img src="${imageSrc}" alt="${title}" class="gallery-img">
+                </div>
+                <div class="modal-description">${description}</div>
+            `;
+            
+            modalBody.innerHTML = modalContent;
+            
+            // Show modal
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add loading states for images
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            
+            images.forEach(img => {
+                img.addEventListener('load', function() {
+                    this.style.opacity = '1';
+                });
+                
+                img.addEventListener('error', function() {
+                    this.style.backgroundColor = 'var(--bg-secondary)';
+                    this.innerHTML = '<i class="fas fa-image" style="font-size: 2rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; height: 100%;"></i>';
+                });
+            });
+        });
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '50px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe gallery items for animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(item);
+            });
+        });
+    </script>
+</body>
+</html>

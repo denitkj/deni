@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Papan Proyeksi - Tampilan Replika</title>
+  <style>
+    :root{
+      --frame:#f0f6fb;
+      --board-bg:#ffffff;
+      --projector-glow: rgba(220,240,255,0.6);
+      --blue-header: #1ea6d8;
+      --blue-row: #cfeff9;
+      --text:#033047;
+    }
+    html,body{height:100%;margin:0;font-family: "Segoe UI", Roboto, Arial, sans-serif;background:#f2e0c9;}
+    .page{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:24px;
+      box-sizing:border-box;
+    }
+
+    /* frame papan */
+    .frame{
+      width:920px;
+      max-width:95vw;
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(180deg,var(--frame),#e3eef8 60%);
+      border-radius:6px;
+      padding:14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* bingkai putih papan tulis */
+    .board{
+      position:absolute;
+      inset:12px;
+      border-radius:4px;
+      background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+      box-shadow: inset 0 0 120px var(--projector-glow);
+      display:flex;
+      flex-direction:column;
+      padding:18px;
+      box-sizing:border-box;
+    }
+
+    /* jam & atas kecil */
+    .top-bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:10px;
+    }
+    .title{
+      font-weight:700;
+      color:var(--text);
+      font-size:20px;
+      letter-spacing:0.6px;
+    }
+    .clock{
+      font-size:13px;
+      color:#666;
+      background:#fff0;
+      padding:4px 8px;
+      border-radius:6px;
+      box-shadow:none;
+    }
+
+    /* area tabel (mirip proyektor) */
+    .proj-area{
+      margin-top:6px;
+      background: rgba(255,255,255,0.72);
+      border-radius:6px;
+      padding:12px;
+      overflow:auto;
+      box-shadow: 0 6px 22px rgba(18,90,130,0.07);
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:14px;
+      color:var(--text);
+    }
+
+    thead th{
+      background:var(--blue-header);
+      color:white;
+      font-weight:800;
+      padding:10px 12px;
+      text-align:left;
+      border-right:1px solid rgba(255,255,255,0.12);
+      box-shadow: inset 0 -6px 12px rgba(0,0,0,0.06);
+    }
+
+    tbody td{
+      padding:10px 12px;
+      border-bottom:1px solid rgba(0,0,0,0.04);
+    }
+
+    tbody tr:nth-child(even) td{
+      background: rgba(30,166,216,0.08); /* lembut biru */
+    }
+
+    /* footer text bar mirip gambar */
+    .footer-bar{
+      margin-top:8px;
+      background: linear-gradient(90deg, rgba(26,140,180,0.08), rgba(26,140,180,0.04));
+      padding:8px 12px;
+      border-radius:6px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-weight:700;
+      color:var(--text);
+      font-size:13px;
+    }
+
+    /* anotasi tebal "Rouspen" vertikal di sisi kiri */
+    .annot-left{
+      position:absolute;
+      left:6px;
+      top:72px;
+      transform: rotate(-90deg);
+      transform-origin:left top;
+      font-weight:900;
+      font-size:20px;
+      color:#2b6a86;
+      letter-spacing:1px;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.35);
+    }
+
+    /* anotasi bawah "Cospen = 5" */
+    .annot-bottom{
+      position:absolute;
+      left:28px;
+      bottom:20px;
+      font-weight:900;
+      font-size:16px;
+      color:#0b4759;
+      background: rgba(255,255,255,0.6);
+      padding:6px 10px;
+      border-radius:6px;
+      box-shadow: 0 6px 18px rgba(10,80,110,0.08);
+    }
+
+    /* efek proyektor flare di kanan atas (mirip 'Berhenti') */
+    .projector-button{
+      position:absolute;
+      right:20px;
+      top:16px;
+      background: linear-gradient(180deg,#fffb,#fff8);
+      padding:6px 14px;
+      border-radius:6px;
+      font-weight:700;
+      color:#1a4b58;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      font-size:13px;
+    }
+
+    /* responsif kecil */
+    @media (max-width:520px){
+      .annot-left{ display:none; }
+      .annot-bottom{ left:12px; font-size:13px; }
+      .title{ font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="frame" role="region" aria-label="papan proyeksi">
+      <div class="board">
+        <div class="top-bar">
+          <div class="title">Daftar Anggota TNI</div>
+          <div class="clock">10:34 PM</div>
+        </div>
+
+        <div class="proj-area">
+          <table aria-label="tabel data anggota">
+            <thead>
+              <tr>
+                <th style="width:6%;">No</th>
+                <th style="width:28%;">Nama</th>
+                <th style="width:26%;">Tempat, Tanggal Lahir</th>
+                <th style="width:20%;">Alamat</th>
+                <th style="width:20%;">Keterangan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Budi Ardi Prasetyo</td>
+                <td>Blitar, 12 Januari 1989</td>
+                <td>Jl. Kenari No. 11 - Malang</td>
+                <td>Pluton 1</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Satria Bima Gunawan</td>
+                <td>Kediri, 22 Desember 1991</td>
+                <td>Desa Sumber No. 15 - Kediri</td>
+                <td>Pluton A</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Gusti Chandra Wicaks</td>
+                <td>Pasuruan, 19 Maret 1990</td>
+                <td>Jl. Sawo No. 21 - Tangen</td>
+                <td>Pluton 2</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Imam Candra Suseno</td>
+                <td>Blitar, 16 April 1992</td>
+                <td>Jl. Mawar No. 5 - Malang</td>
+                <td>Pluton 3</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Putra Eka Rusdi</td>
+                <td>Jombang, 13 Mei 1994</td>
+                <td>Jl. Sentra No. 7 - Blitar</td>
+                <td>Pluton 1</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Satria Fajar Nugroho</td>
+                <td>Malang, 7 Juli 1992</td>
+                <td>Depokgudo No. 21 - Pasur</td>
+                <td>Pluton 1</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Fikri Cahadi Nusantara</td>
+                <td>Malang, 6 Jan 1995</td>
+                <td>Jl. Inti No. 18 - Malang</td>
+                <td>Pluton 3</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>Putra Hendro Wijaya</td>
+                <td>Trenggalek, 15 Agustus 1993</td>
+                <td>Jl. Petir No. 12 - Trengg</td>
+                <td>Pluton 2</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>Sarah Intan Kusuma</td>
+                <td>Blitar, 28 September 1990</td>
+                <td>Jl. Permata No. 4 - Blitar</td>
+                <td>Pluton 1</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td>Auliya Reno Lestari</td>
+                <td>Kediri, 30 Oktober 1991</td>
+                <td>Jl. Sosial Nasional No. 6 - Kediri</td>
+                <td>Pluton 3</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="footer-bar">
+            <div>Catatan: Kolom tebal pada header sesuai proyektor</div>
+            <div>Jumlah Anggota: <strong>10 Orang</strong></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- anotasi tebal seperti pada gambar -->
+      <div class="annot-left">ROUSPEN</div>
+      <div class="annot-bottom">Cospen = <strong>5</strong></div>
+
+      <!-- tombol kecil di kanan atas (mirip kata "Berhenti" di gambar) -->
+      <div class="projector-button">Berhenti</div>
+    </div>
+  </div>
+
+  <script>
+    // kecil: tambahkan efek glow yang perlahan untuk meniru proyektor
+    (function(){
+      const frame = document.querySelector('.board');
+      let t = 0;
+      setInterval(()=> {
+        t += 0.02;
+        const glow = 0.6 + Math.sin(t)*0.06;
+        frame.style.boxShadow = `inset 0 0 ${Math.round(120*glow)}px rgba(220,240,255,${0.25*glow})`;
+      },40);
+    })();
+  </script>
+</body>
+</html>
