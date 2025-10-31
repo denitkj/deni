@@ -1,0 +1,167 @@
+Baik, saya akan menambahkan animasi masuk untuk hero section dan efek mengetik untuk teks. Berikut yang perlu **ditambahkan dan diganti**:
+
+---
+
+## 🎯 **1. TAMBAHKAN CSS ini di dalam tag `<style>` (sebelum penutup `</style>`)**
+
+Cari bagian akhir CSS (sebelum `</style>`), lalu tambahkan:
+
+```css
+/* ============================================
+   ANIMASI HERO SECTION - FADE IN + SLIDE UP
+   ============================================ */
+
+.hero-content,
+.hero-image {
+    opacity: 0;
+    animation: fadeInUp 1s ease forwards;
+}
+
+.hero-content {
+    animation-delay: 0.3s;
+}
+
+.hero-image {
+    animation-delay: 0.6s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   ANIMASI TYPING EFFECT UNTUK TEKS
+   ============================================ */
+
+.typing-text {
+    display: inline-block;
+    border-right: 3px solid var(--primary-color);
+    white-space: nowrap;
+    overflow: hidden;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--primary-color); }
+}
+
+/* Responsif: kurangi durasi di HP */
+@media (max-width: 768px) {
+    .typing-text {
+        animation: typing 2.5s steps(30, end), blink-caret 0.75s step-end infinite;
+    }
+}
+```
+
+---
+
+## 🎯 **2. GANTI Bagian HTML Hero Section**
+
+Cari kode ini di HTML (sekitar baris 900-920):
+
+```html
+<h1 data-id="Agung Deni Prayogo" data-en="Agung Deni Prayogo">Agung Deni Prayogo</h1>
+<p class="tagline" data-id="Fresh Graduate TKJ" data-en="Fresh Graduate TKJ">Fresh Graduate TKJ</p>
+```
+
+**GANTI MENJADI:**
+
+```html
+<h1>
+    <span data-id="I am " data-en="I am ">I am </span>
+    <span class="typing-text" data-id="Agung Deni Prayogo" data-en="Agung Deni Prayogo">
+        Agung Deni Prayogo
+    </span>
+</h1>
+<p class="tagline" data-id="Fresh Graduate TKJ" data-en="Fresh Graduate TKJ">Fresh Graduate TKJ</p>
+```
+
+---
+
+## 🎯 **3. TAMBAHKAN JavaScript untuk Efek Typing (opsional - versi lebih smooth)**
+
+Jika ingin efek typing lebih halus (karakter per karakter), cari bagian JavaScript (sebelum penutup `</script>`) dan **TAMBAHKAN** ini:
+
+```javascript
+// ============================================
+// TYPING EFFECT (alternatif lebih smooth)
+// ============================================
+function initTypingEffect() {
+    const typingElement = document.querySelector('.typing-text');
+    if (!typingElement) return;
+
+    const text = typingElement.textContent;
+    typingElement.textContent = '';
+    typingElement.style.borderRight = '3px solid var(--primary-color)';
+    
+    let i = 0;
+    const speed = 100; // kecepatan ketik (ms)
+
+    function typeWriter() {
+        if (i < text.length) {
+            typingElement.textContent += text.charAt(i);
+            i++;
+            setTimeout(typeWriter, speed);
+        } else {
+            // Blinking cursor setelah selesai
+            setInterval(() => {
+                typingElement.style.borderRight = 
+                    typingElement.style.borderRight === 'none' 
+                    ? '3px solid var(--primary-color)' 
+                    : 'none';
+            }, 500);
+        }
+    }
+
+    // Tunggu animasi fade in selesai baru mulai typing
+    setTimeout(typeWriter, 1000);
+}
+
+// Panggil di fungsi init()
+function init() {
+    // ... kode init lainnya ...
+    
+    initTypingEffect(); // TAMBAHKAN INI
+    
+    // ... kode init lainnya ...
+}
+```
+
+---
+
+## 📋 **Ringkasan Perubahan:**
+
+### ✅ **Yang Ditambah:**
+1. **CSS animasi fadeInUp** untuk hero section
+2. **CSS typing effect** dengan border kursor
+3. **JavaScript typing effect** (opsional, untuk efek lebih smooth)
+
+### ✅ **Yang Diganti:**
+1. **Tag `<h1>`** di hero section → tambahkan wrapper `<span>` dan class `typing-text`
+
+---
+
+## 🎨 **Hasil Akhir:**
+- ✨ Hero section muncul dengan animasi **fade in + slide up**
+- ⌨️ Teks "Agung Deni Prayogo" muncul dengan **efek mengetik**
+- 📱 Responsif di HP dengan durasi animasi lebih cepat
+- 🌍 Mendukung toggle bahasa (ID/EN)
+
+**Pilih salah satu:**
+- Gunakan **CSS typing** (lebih ringan, langsung jalan)
+- Gunakan **JS typing** (lebih smooth, karakter per karakter)
+
+Mau saya buatkan versi lengkap file HTML-nya yang sudah jadi? 😊

@@ -1,0 +1,1499 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TMA - IP to Binary Converter</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #06b6d4;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        [data-theme="dark"] {
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --border-color: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .navbar {
+            background-color: var(--bg-card);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-primary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle, .lang-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover, .lang-toggle:hover {
+            transform: scale(1.1);
+            background: var(--bg-primary);
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 7rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            color: var(--text-primary);
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-secondary);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .tool-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tool-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .tool-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .calculator-section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: none;
+            animation: slideIn 0.5s ease;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .calculator-section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tool-button {
+            flex: 1;
+            min-width: 150px;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .tool-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .tool-button.secondary {
+            background: linear-gradient(135deg, var(--danger-color), #dc2626);
+        }
+
+        .tool-button.copy-btn {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+        }
+
+        .results-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .results-container.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        .result-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            min-width: 150px;
+        }
+
+        .result-value {
+            color: var(--text-secondary);
+            font-family: 'Courier New', monospace;
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 5px;
+            word-break: break-all;
+            flex: 1;
+        }
+
+        .binary-display {
+            font-family: 'Courier New', monospace;
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            word-break: break-all;
+            line-height: 1.8;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .octet-group {
+            display: inline-block;
+            margin: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--bg-card);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            color: var(--text-primary);
+        }
+
+        .info-box i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-content {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+
+            .nav-actions {
+                order: 3;
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .back-button {
+                flex: 1;
+            }
+
+            .container {
+                margin-top: 10rem;
+                padding: 0 1rem;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .tool-button {
+                width: 100%;
+            }
+
+            .result-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .result-value {
+                width: 100%;
+            }
+
+            .result-label {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-binary"></i>
+                <h1 data-id="TMA Binary Converter" data-en="TMA Binary Converter">TMA Binary Converter</h1>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="lang-toggle" onclick="toggleLanguage()" title="Change Language">
+                    <span>EN</span>
+                </button>
+                <button class="back-button" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    <span data-id="Kembali" data-en="Back">Kembali</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="hero">
+            <h1>
+                <i class="fas fa-exchange-alt"></i> 
+                <span data-id="IP Address ↔ Binary Converter" data-en="IP Address ↔ Binary Converter">IP Address ↔ Binary Converter</span>
+            </h1>
+            <p data-id="Konversi IP Address ke Binary dan sebaliknya untuk IPv4 & IPv6" data-en="Convert IP Address to Binary and vice versa for IPv4 & IPv6">
+                Konversi IP Address ke Binary dan sebaliknya untuk IPv4 & IPv6
+            </p>
+        </section>
+
+        <div class="tools-grid" id="toolsGrid">
+            <div class="tool-card" onclick="showTool('ipv4ToBinary')">
+                <i class="fas fa-long-arrow-alt-right"></i>
+                <h3 data-id="IPv4 → Binary" data-en="IPv4 → Binary">IPv4 → Binary</h3>
+                <p data-id="Konversi alamat IPv4 ke format Binary" data-en="Convert IPv4 address to Binary format">
+                    Konversi alamat IPv4 ke format Binary
+                </p>
+            </div>
+
+            <div class="tool-card" onclick="showTool('binaryToIPv4')">
+                <i class="fas fa-long-arrow-alt-left"></i>
+                <h3 data-id="Binary → IPv4" data-en="Binary → IPv4">Binary → IPv4</h3>
+                <p data-id="Konversi Binary ke alamat IPv4" data-en="Convert Binary to IPv4 address">
+                    Konversi Binary ke alamat IPv4
+                </p>
+            </div>
+
+            <div class="tool-card" onclick="showTool('ipv6ToBinary')">
+                <i class="fas fa-long-arrow-alt-right"></i>
+                <h3 data-id="IPv6 → Binary" data-en="IPv6 → Binary">IPv6 → Binary</h3>
+                <p data-id="Konversi alamat IPv6 ke format Binary" data-en="Convert IPv6 address to Binary format">
+                    Konversi alamat IPv6 ke format Binary
+                </p>
+            </div>
+
+            <div class="tool-card" onclick="showTool('binaryToIPv6')">
+                <i class="fas fa-long-arrow-alt-left"></i>
+                <h3 data-id="Binary → IPv6" data-en="Binary → IPv6">Binary → IPv6</h3>
+                <p data-id="Konversi Binary ke alamat IPv6" data-en="Convert Binary to IPv6 address">
+                    Konversi Binary ke alamat IPv6
+                </p>
+            </div>
+
+            <div class="tool-card" onclick="showTool('batchConverter')">
+                <i class="fas fa-list"></i>
+                <h3 data-id="Batch Converter" data-en="Batch Converter">Batch Converter</h3>
+                <p data-id="Konversi multiple IP sekaligus" data-en="Convert multiple IPs at once">
+                    Konversi multiple IP sekaligus
+                </p>
+            </div>
+
+            <div class="tool-card" onclick="showTool('hexConverter')">
+                <i class="fas fa-hashtag"></i>
+                <h3 data-id="IP ↔ Hexadecimal" data-en="IP ↔ Hexadecimal">IP ↔ Hexadecimal</h3>
+                <p data-id="Konversi IP ke Hexadecimal dan sebaliknya" data-en="Convert IP to Hexadecimal and vice versa">
+                    Konversi IP ke Hexadecimal dan sebaliknya
+                </p>
+            </div>
+        </div>
+
+        <!-- IPv4 to Binary -->
+        <div id="ipv4ToBinary" class="calculator-section">
+            <h2><i class="fas fa-long-arrow-alt-right"></i> <span data-id="IPv4 to Binary Converter" data-en="IPv4 to Binary Converter">IPv4 to Binary Converter</span></h2>
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span data-id="Masukkan alamat IPv4 untuk mengkonversinya ke format Binary" data-en="Enter IPv4 address to convert it to Binary format">
+                    Masukkan alamat IPv4 untuk mengkonversinya ke format Binary
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label data-id="IPv4 Address" data-en="IPv4 Address">IPv4 Address</label>
+                <input type="text" id="ipv4Input" placeholder="192.168.1.1">
+            </div>
+
+            <div class="button-group">
+                <button class="tool-button" onclick="convertIPv4ToBinary()">
+                    <i class="fas fa-play"></i>
+                    <span data-id="Konversi" data-en="Convert">Konversi</span>
+                </button>
+                <button class="tool-button copy-btn" onclick="copyIPv4BinaryResult()">
+                    <i class="fas fa-copy"></i>
+                    <span data-id="Copy Binary" data-en="Copy Binary">Copy Binary</span>
+                </button>
+                <button class="tool-button secondary" onclick="resetIPv4ToBinary()">
+                    <i class="fas fa-redo"></i>
+                    <span data-id="Reset" data-en="Reset">Reset</span>
+                </button>
+            </div>
+
+            <div id="ipv4ToBinaryResults" class="results-container"></div>
+        </div>
+
+        <!-- Binary to IPv4 -->
+        <div id="binaryToIPv4" class="calculator-section">
+            <h2><i class="fas fa-long-arrow-alt-left"></i> <span data-id="Binary to IPv4 Converter" data-en="Binary to IPv4 Converter">Binary to IPv4 Converter</span></h2>
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span data-id="Masukkan 32-bit Binary untuk mengkonversinya ke IPv4" data-en="Enter 32-bit Binary to convert it to IPv4">
+                    Masukkan 32-bit Binary untuk mengkonversinya ke IPv4
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label data-id="Binary (32 bits)" data-en="Binary (32 bits)">Binary (32 bits)</label>
+                <input type="text" id="binaryIPv4Input" placeholder="11000000101010000000000100000001">
+            </div>
+
+            <div class="button-group">
+                <button class="tool-button" onclick="convertBinaryToIPv4()">
+                    <i class="fas fa-play"></i>
+                    <span data-id="Konversi" data-en="Convert">Konversi</span>
+                </button>
+                <button class="tool-button copy-btn" onclick="copyBinaryIPv4Result()">
+                    <i class="fas fa-copy"></i>
+                    <span data-id="Copy IPv4" data-en="Copy IPv4">Copy IPv4</span>
+                </button>
+                <button class="tool-button secondary" onclick="resetBinaryToIPv4()">
+                    <i class="fas fa-redo"></i>
+                    <span data-id="Reset" data-en="Reset">Reset</span>
+                </button>
+            </div>
+
+            <div id="binaryToIPv4Results" class="results-container"></div>
+        </div>
+
+        <!-- IPv6 to Binary -->
+        <div id="ipv6ToBinary" class="calculator-section">
+            <h2><i class="fas fa-long-arrow-alt-right"></i> <span data-id="IPv6 to Binary Converter" data-en="IPv6 to Binary Converter">IPv6 to Binary Converter</span></h2>
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span data-id="Masukkan alamat IPv6 untuk mengkonversinya ke format Binary" data-en="Enter IPv6 address to convert it to Binary format">
+                    Masukkan alamat IPv6 untuk mengkonversinya ke format Binary
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label data-id="IPv6 Address" data-en="IPv6 Address">IPv6 Address</label>
+                <input type="text" id="ipv6Input" placeholder="2001:0db8:85a3:0000:0000:8a2e:0370:7334">
+            </div>
+
+            <div class="button-group">
+                <button class="tool-button" onclick="convertIPv6ToBinary()">
+                    <i class="fas fa-play"></i>
+                    <span data-id="Konversi" data-en="Convert">Konversi</span>
+                </button>
+                <button class="tool-button copy-btn" onclick="copyIPv6BinaryResult()">
+                    <i class="fas fa-copy"></i>
+                    <span data-id="Copy Binary" data-en="Copy Binary">Copy Binary</span>
+                </button>
+                <button class="tool-button secondary" onclick="resetIPv6ToBinary()">
+                    <i class="fas fa-redo"></i>
+                    <span data-id="Reset" data-en="Reset">Reset</span>
+                </button>
+            </div>
+
+            <div id="ipv6ToBinaryResults" class="results-container"></div>
+        </div>
+
+        <!-- Binary to IPv6 -->
+        <div id="binaryToIPv6" class="calculator-section">
+            <h2><i class="fas fa-long-arrow-alt-left"></i> <span data-id="Binary to IPv6 Converter" data-en="Binary to IPv6 Converter">Binary to IPv6 Converter</span></h2>
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span data-id="Masukkan 128-bit Binary untuk mengkonversinya ke IPv6" data-en="Enter 128-bit Binary to convert it to IPv6">
+                    Masukkan 128-bit Binary untuk mengkonversinya ke IPv6
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label data-id="Binary (128 bits)" data-en="Binary (128 bits)">Binary (128 bits)</label>
+                <textarea id="binaryIPv6Input" placeholder="00100000000000010000110110111000100001011010001100000000000000000000000000000000100010100010111000000011011100000111001100110100"></textarea>
+            </div>
+
+            <div class="button-group">
+                <button class="tool-button" onclick="convertBinaryToIPv6()">
+                    <i class="fas fa-play"></i>
+                    <span data-id="Konversi" data-en="Convert">Konversi</span>
+                </button>
+                <button class="tool-button copy-btn" onclick="copyBinaryIPv6Result()">
+                    <i class="fas fa-copy"></i>
+                    <span data-id="Copy IPv6" data-en="Copy IPv6">Copy IPv6</span>
+                </button>
+                <button class="tool-button secondary" onclick="resetBinaryToIPv6()">
+                    <i class="fas fa-redo"></i>
+                    <span data-id="Reset" data-en="Reset">Reset</span>
+                </button>
+            </div>
+
+            <div id="binaryToIPv6Results" class="results-container"></div>
+        </div>
+
+        <!-- Batch Converter -->
+        <div id="batchConverter" class="calculator-section">
+            <h2><i class="fas fa-list"></i> <span data-id="Batch IP Converter" data-en="Batch IP Converter">Batch IP Converter</span></h2>
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span data-id="Konversi multiple IP addresses sekaligus (satu per baris)" data-en="Convert multiple IP addresses at once (one per line)">
+                    Konversi multiple IP addresses sekaligus (satu per baris)
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label data-id="IP Addresses (satu per baris)" data-en="IP Addresses (one per line)">IP Addresses (satu per baris)</label>
+                <textarea id="batchInput" placeholder="192.168.1.1&#10;10.0.0.1&#10;172.16.0.1"></textarea>
+            </div>
+
+            <div class="button-group">
+                <button class="tool-button" onclick="convertBatch()">
+                    <i class="fas fa-play"></i>
+                    <span data-id="Konversi Semua" data-en="Convert All">Konversi Semua</span>
+                </button>
+                <button class="tool-button copy-btn" onclick="copyBatchResult()">
+                    <i class="fas fa-copy"></i>
+                    <span data-id="Copy Hasil" data-en="Copy Results">Copy Hasil</span>
+                </button>
+                <button class="tool-button secondary" onclick="resetBatch()">
+                    <i class="fas fa-redo"></i>
+                    <span data-id="Reset" data-en="Reset">Reset</span>
+                </button>
+            </div>
+
+            <div id="batchResults" class="results-container"></div>
+        </div>
+
+        <!-- Hex Converter -->
+        <div id="hexConverter" class="calculator-section">
+            <h2><i class="fas fa-hashtag"></i> <span data-id="IP ↔ Hexadecimal Converter" data-en="IP ↔ Hexadecimal Converter">IP ↔ Hexadecimal Converter</span></h2>
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span data-id="Konversi antara IP Address dan Hexadecimal" data-en="Convert between IP Address and Hexadecimal">
+                    Konversi antara IP Address dan Hexadecimal
+                </span>
+            </div>
+
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="setHexTab('ipToHex')" data-id="IP → Hex" data-en="IP → Hex">IP → Hex</button>
+                <button class="tab-button" onclick="setHexTab('hexToIp')" data-id="Hex → IP" data-en="Hex → IP">Hex → IP</button>
+            </div>
+
+            <div id="ipToHexTab">
+                <div class="form-group">
+                    <label data-id="IP Address (IPv4 atau IPv6)" data-en="IP Address (IPv4 or IPv6)">IP Address (IPv4 atau IPv6)</label>
+                    <input type="text" id="ipToHexInput" placeholder="192.168.1.1 atau 2001:db8::1">
+                </div>
+            </div>
+
+            <div id="hexToIpTab" style="display: none;">
+                <div class="form-group">
+                    <label data-id="Hexadecimal" data-en="Hexadecimal">Hexadecimal</label>
+                    <input type="text" id="hexToIpInput" placeholder="C0A80101 atau 20010db8000000000000000000000001">
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="tool-button" onclick="convertHex()">
+                    <i class="fas fa-sync"></i>
+                    <span data-id="Konversi" data-en="Convert">Konversi</span>
+                </button>
+                <button class="tool-button copy-btn" onclick="copyHexResult()">
+                    <i class="fas fa-copy"></i>
+                    <span data-id="Copy Hasil" data-en="Copy Result">Copy Hasil</span>
+                </button>
+                <button class="tool-button secondary" onclick="resetHex()">
+                    <i class="fas fa-redo"></i>
+                    <span data-id="Reset" data-en="Reset">Reset</span>
+                </button>
+            </div>
+
+            <div id="hexResults" class="results-container"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = localStorage.getItem('language') || 'id';
+        let currentHexTab = 'ipToHex';
+        let lastBinaryResult = '';
+        let lastIPResult = '';
+        let lastHexResult = '';
+        
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const themeIcon = document.querySelector('.theme-toggle i');
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.body.setAttribute('data-theme', 'dark');
+                if (themeIcon) themeIcon.className = 'fas fa-sun';
+            }
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.querySelector('.theme-toggle i');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        function toggleLanguage() {
+            const langButton = document.querySelector('.lang-toggle span');
+            const elements = document.querySelectorAll('[data-id][data-en]');
+            
+            if (currentLang === 'id') {
+                currentLang = 'en';
+                langButton.textContent = 'ID';
+                elements.forEach(el => {
+                    const newText = el.getAttribute('data-en');
+                    if (newText) el.textContent = newText;
+                });
+            } else {
+                currentLang = 'id';
+                langButton.textContent = 'EN';
+                elements.forEach(el => {
+                    const newText = el.getAttribute('data-id');
+                    if (newText) el.textContent = newText;
+                });
+            }
+            localStorage.setItem('language', currentLang);
+        }
+
+        function initLanguage() {
+            if (currentLang === 'en') {
+                const langButton = document.querySelector('.lang-toggle span');
+                langButton.textContent = 'ID';
+                const elements = document.querySelectorAll('[data-id][data-en]');
+                elements.forEach(el => {
+                    const newText = el.getAttribute('data-en');
+                    if (newText) el.textContent = newText;
+                });
+            }
+        }
+
+        // Utility Functions
+        function validateIPv4(ip) {
+            const regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+            return regex.test(ip);
+        }
+
+        function validateIPv6(ip) {
+            // Expand IPv6 shorthand
+            const regex = /^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
+            return regex.test(ip);
+        }
+
+        function expandIPv6(ip) {
+            // Handle :: expansion
+            if (ip.includes('::')) {
+                const parts = ip.split('::');
+                const left = parts[0] ? parts[0].split(':') : [];
+                const right = parts[1] ? parts[1].split(':') : [];
+                const missing = 8 - left.length - right.length;
+                const middle = Array(missing).fill('0000');
+                const expanded = [...left, ...middle, ...right];
+                ip = expanded.join(':');
+            }
+            
+            // Pad each segment to 4 digits
+            return ip.split(':').map(segment => segment.padStart(4, '0')).join(':');
+        }
+
+        function showTool(toolId) {
+            document.querySelectorAll('.calculator-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(toolId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert(currentLang === 'id' ? 'Berhasil disalin!' : 'Copied successfully!');
+            });
+        }
+
+        // IPv4 to Binary Converter
+        function convertIPv4ToBinary() {
+            const ip = document.getElementById('ipv4Input').value.trim();
+            
+            if (!validateIPv4(ip)) {
+                alert(currentLang === 'id' ? 'Format IPv4 tidak valid!' : 'Invalid IPv4 format!');
+                return;
+            }
+
+            const octets = ip.split('.');
+            const binaryOctets = octets.map(octet => {
+                const binary = parseInt(octet).toString(2).padStart(8, '0');
+                return binary;
+            });
+
+            const fullBinary = binaryOctets.join('');
+            lastBinaryResult = fullBinary;
+
+            const labels = currentLang === 'id' ? {
+                title: 'Hasil Konversi IPv4 → Binary',
+                original: 'IPv4 Original',
+                binary: 'Binary (32 bits)',
+                decimal: 'Decimal Value',
+                hex: 'Hexadecimal',
+                breakdown: 'Breakdown per Octet'
+            } : {
+                title: 'IPv4 → Binary Conversion Result',
+                original: 'Original IPv4',
+                binary: 'Binary (32 bits)',
+                decimal: 'Decimal Value',
+                hex: 'Hexadecimal',
+                breakdown: 'Breakdown per Octet'
+            };
+
+            let breakdownHTML = '<div style="margin-top: 1rem;">';
+            octets.forEach((octet, index) => {
+                const binary = binaryOctets[index];
+                breakdownHTML += `
+                    <div class="result-item">
+                        <span class="result-label">Octet ${index + 1} (${octet})</span>
+                        <span class="result-value"><span class="octet-group">${binary}</span></span>
+                    </div>
+                `;
+            });
+            breakdownHTML += '</div>';
+
+            const decimalValue = parseInt(fullBinary, 2);
+            const hexValue = octets.map(o => parseInt(o).toString(16).padStart(2, '0').toUpperCase()).join('.');
+
+            const resultsHTML = `
+                <h3>${labels.title}</h3>
+                <div class="result-item">
+                    <span class="result-label">${labels.original}</span>
+                    <span class="result-value">${ip}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.binary}</span>
+                    <span class="result-value">${fullBinary}</span>
+                </div>
+                <div class="binary-display">
+                    ${binaryOctets.map(b => `<span class="octet-group">${b}</span>`).join(' ')}
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.hex}</span>
+                    <span class="result-value">${hexValue}</span>
+                </div>
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">${labels.breakdown}</h4>
+                ${breakdownHTML}
+            `;
+
+            const resultsDiv = document.getElementById('ipv4ToBinaryResults');
+            resultsDiv.innerHTML = resultsHTML;
+            resultsDiv.classList.add('show');
+        }
+
+        function copyIPv4BinaryResult() {
+            if (lastBinaryResult) {
+                copyToClipboard(lastBinaryResult);
+            } else {
+                alert(currentLang === 'id' ? 'Belum ada hasil konversi!' : 'No conversion result yet!');
+            }
+        }
+
+        function resetIPv4ToBinary() {
+            document.getElementById('ipv4Input').value = '';
+            document.getElementById('ipv4ToBinaryResults').classList.remove('show');
+            lastBinaryResult = '';
+        }
+
+        // Binary to IPv4 Converter
+        function convertBinaryToIPv4() {
+            const binary = document.getElementById('binaryIPv4Input').value.trim().replace(/\s/g, '');
+            
+            if (!/^[01]{32}$/.test(binary)) {
+                alert(currentLang === 'id' ? 'Binary harus 32 bit (hanya 0 dan 1)!' : 'Binary must be 32 bits (only 0 and 1)!');
+                return;
+            }
+
+            const octets = [];
+            for (let i = 0; i < 32; i += 8) {
+                const octet = binary.substring(i, i + 8);
+                const decimal = parseInt(octet, 2);
+                octets.push(decimal);
+            }
+
+            const ipv4 = octets.join('.');
+            lastIPResult = ipv4;
+
+            const labels = currentLang === 'id' ? {
+                title: 'Hasil Konversi Binary → IPv4',
+                binary: 'Binary Input',
+                ipv4: 'IPv4 Address',
+                hex: 'Hexadecimal',
+                breakdown: 'Breakdown per Octet'
+            } : {
+                title: 'Binary → IPv4 Conversion Result',
+                binary: 'Binary Input',
+                ipv4: 'IPv4 Address',
+                hex: 'Hexadecimal',
+                breakdown: 'Breakdown per Octet'
+            };
+
+            let breakdownHTML = '<div style="margin-top: 1rem;">';
+            for (let i = 0; i < 32; i += 8) {
+                const octet = binary.substring(i, i + 8);
+                const decimal = parseInt(octet, 2);
+                breakdownHTML += `
+                    <div class="result-item">
+                        <span class="result-label"><span class="octet-group">${octet}</span></span>
+                        <span class="result-value">${decimal}</span>
+                    </div>
+                `;
+            }
+            breakdownHTML += '</div>';
+
+            const hexValue = octets.map(o => o.toString(16).padStart(2, '0').toUpperCase()).join('.');
+
+            const resultsHTML = `
+                <h3>${labels.title}</h3>
+                <div class="result-item">
+                    <span class="result-label">${labels.binary}</span>
+                    <span class="result-value">${binary}</span>
+                </div>
+                <div class="binary-display">
+                    ${binary.match(/.{8}/g).map(b => `<span class="octet-group">${b}</span>`).join(' ')}
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.ipv4}</span>
+                    <span class="result-value">${ipv4}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.hex}</span>
+                    <span class="result-value">${hexValue}</span>
+                </div>
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">${labels.breakdown}</h4>
+                ${breakdownHTML}
+            `;
+
+            const resultsDiv = document.getElementById('binaryToIPv4Results');
+            resultsDiv.innerHTML = resultsHTML;
+            resultsDiv.classList.add('show');
+        }
+
+        function copyBinaryIPv4Result() {
+            if (lastIPResult) {
+                copyToClipboard(lastIPResult);
+            } else {
+                alert(currentLang === 'id' ? 'Belum ada hasil konversi!' : 'No conversion result yet!');
+            }
+        }
+
+        function resetBinaryToIPv4() {
+            document.getElementById('binaryIPv4Input').value = '';
+            document.getElementById('binaryToIPv4Results').classList.remove('show');
+            lastIPResult = '';
+        }
+
+        // IPv6 to Binary Converter
+        function convertIPv6ToBinary() {
+            const ip = document.getElementById('ipv6Input').value.trim();
+            
+            if (!validateIPv6(ip)) {
+                alert(currentLang === 'id' ? 'Format IPv6 tidak valid!' : 'Invalid IPv6 format!');
+                return;
+            }
+
+            const expanded = expandIPv6(ip);
+            const segments = expanded.split(':');
+            
+            const binarySegments = segments.map(segment => {
+                const decimal = parseInt(segment, 16);
+                return decimal.toString(2).padStart(16, '0');
+            });
+
+            const fullBinary = binarySegments.join('');
+            lastBinaryResult = fullBinary;
+
+            const labels = currentLang === 'id' ? {
+                title: 'Hasil Konversi IPv6 → Binary',
+                original: 'IPv6 Original',
+                expanded: 'IPv6 Expanded',
+                binary: 'Binary (128 bits)',
+                hex: 'Hexadecimal (Full)',
+                breakdown: 'Breakdown per Segment'
+            } : {
+                title: 'IPv6 → Binary Conversion Result',
+                original: 'Original IPv6',
+                expanded: 'Expanded IPv6',
+                binary: 'Binary (128 bits)',
+                hex: 'Hexadecimal (Full)',
+                breakdown: 'Breakdown per Segment'
+            };
+
+            let breakdownHTML = '<div style="margin-top: 1rem;">';
+            segments.forEach((segment, index) => {
+                const binary = binarySegments[index];
+                breakdownHTML += `
+                    <div class="result-item">
+                        <span class="result-label">Segment ${index + 1} (${segment})</span>
+                        <span class="result-value"><span class="octet-group">${binary}</span></span>
+                    </div>
+                `;
+            });
+            breakdownHTML += '</div>';
+
+            const resultsHTML = `
+                <h3>${labels.title}</h3>
+                <div class="result-item">
+                    <span class="result-label">${labels.original}</span>
+                    <span class="result-value">${ip}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.expanded}</span>
+                    <span class="result-value">${expanded}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.binary}</span>
+                    <span class="result-value">${fullBinary}</span>
+                </div>
+                <div class="binary-display">
+                    ${binarySegments.map(b => `<span class="octet-group">${b}</span>`).join(' ')}
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.hex}</span>
+                    <span class="result-value">${expanded.replace(/:/g, '')}</span>
+                </div>
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">${labels.breakdown}</h4>
+                ${breakdownHTML}
+            `;
+
+            const resultsDiv = document.getElementById('ipv6ToBinaryResults');
+            resultsDiv.innerHTML = resultsHTML;
+            resultsDiv.classList.add('show');
+        }
+
+        function copyIPv6BinaryResult() {
+            if (lastBinaryResult) {
+                copyToClipboard(lastBinaryResult);
+            } else {
+                alert(currentLang === 'id' ? 'Belum ada hasil konversi!' : 'No conversion result yet!');
+            }
+        }
+
+        function resetIPv6ToBinary() {
+            document.getElementById('ipv6Input').value = '';
+            document.getElementById('ipv6ToBinaryResults').classList.remove('show');
+            lastBinaryResult = '';
+        }
+
+        // Binary to IPv6 Converter
+        function convertBinaryToIPv6() {
+            const binary = document.getElementById('binaryIPv6Input').value.trim().replace(/\s/g, '');
+            
+            if (!/^[01]{128}$/.test(binary)) {
+                alert(currentLang === 'id' ? 'Binary harus 128 bit (hanya 0 dan 1)!' : 'Binary must be 128 bits (only 0 and 1)!');
+                return;
+            }
+
+            const segments = [];
+            for (let i = 0; i < 128; i += 16) {
+                const segment = binary.substring(i, i + 16);
+                const hex = parseInt(segment, 2).toString(16).padStart(4, '0');
+                segments.push(hex);
+            }
+
+            const ipv6Full = segments.join(':');
+            
+            // Compress IPv6
+            let ipv6Compressed = ipv6Full.replace(/\b0+/g, '0');
+            ipv6Compressed = ipv6Compressed.replace(/\b0(:\b0)+/g, '::');
+            
+            lastIPResult = ipv6Compressed;
+
+            const labels = currentLang === 'id' ? {
+                title: 'Hasil Konversi Binary → IPv6',
+                binary: 'Binary Input',
+                ipv6Full: 'IPv6 (Full)',
+                ipv6Compressed: 'IPv6 (Compressed)',
+                breakdown: 'Breakdown per Segment'
+            } : {
+                title: 'Binary → IPv6 Conversion Result',
+                binary: 'Binary Input',
+                ipv6Full: 'IPv6 (Full)',
+                ipv6Compressed: 'IPv6 (Compressed)',
+                breakdown: 'Breakdown per Segment'
+            };
+
+            let breakdownHTML = '<div style="margin-top: 1rem;">';
+            for (let i = 0; i < 128; i += 16) {
+                const segment = binary.substring(i, i + 16);
+                const hex = parseInt(segment, 2).toString(16).padStart(4, '0');
+                breakdownHTML += `
+                    <div class="result-item">
+                        <span class="result-label"><span class="octet-group">${segment}</span></span>
+                        <span class="result-value">${hex}</span>
+                    </div>
+                `;
+            }
+            breakdownHTML += '</div>';
+
+            const resultsHTML = `
+                <h3>${labels.title}</h3>
+                <div class="result-item">
+                    <span class="result-label">${labels.binary}</span>
+                    <span class="result-value" style="font-size: 0.8rem;">${binary}</span>
+                </div>
+                <div class="binary-display" style="font-size: 0.7rem; line-height: 1.5;">
+                    ${binary.match(/.{16}/g).map(b => `<span class="octet-group">${b}</span>`).join(' ')}
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.ipv6Full}</span>
+                    <span class="result-value">${ipv6Full}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.ipv6Compressed}</span>
+                    <span class="result-value">${ipv6Compressed}</span>
+                </div>
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">${labels.breakdown}</h4>
+                ${breakdownHTML}
+            `;
+
+            const resultsDiv = document.getElementById('binaryToIPv6Results');
+            resultsDiv.innerHTML = resultsHTML;
+            resultsDiv.classList.add('show');
+        }
+
+        function copyBinaryIPv6Result() {
+            if (lastIPResult) {
+                copyToClipboard(lastIPResult);
+            } else {
+                alert(currentLang === 'id' ? 'Belum ada hasil konversi!' : 'No conversion result yet!');
+            }
+        }
+
+        function resetBinaryToIPv6() {
+            document.getElementById('binaryIPv6Input').value = '';
+            document.getElementById('binaryToIPv6Results').classList.remove('show');
+            lastIPResult = '';
+        }
+
+        // Batch Converter
+        function convertBatch() {
+            const input = document.getElementById('batchInput').value.trim();
+            const lines = input.split('\n').filter(line => line.trim());
+            
+            if (lines.length === 0) {
+                alert(currentLang === 'id' ? 'Masukkan minimal satu IP address!' : 'Enter at least one IP address!');
+                return;
+            }
+
+            const labels = currentLang === 'id' ? {
+                title: `Hasil Konversi Batch (${lines.length} IP)`,
+                number: '#',
+                ip: 'IP Address',
+                binary: 'Binary',
+                hex: 'Hexadecimal',
+                invalid: 'Invalid'
+            } : {
+                title: `Batch Conversion Results (${lines.length} IPs)`,
+                number: '#',
+                ip: 'IP Address',
+                binary: 'Binary',
+                hex: 'Hexadecimal',
+                invalid: 'Invalid'
+            };
+
+            let tableHTML = `
+                <h3>${labels.title}</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>${labels.number}</th>
+                            <th>${labels.ip}</th>
+                            <th>${labels.binary}</th>
+                            <th>${labels.hex}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            let batchResults = [];
+
+            lines.forEach((line, index) => {
+                const ip = line.trim();
+                let binary = '';
+                let hex = '';
+                let isValid = false;
+
+                if (validateIPv4(ip)) {
+                    isValid = true;
+                    const octets = ip.split('.');
+                    binary = octets.map(o => parseInt(o).toString(2).padStart(8, '0')).join('');
+                    hex = octets.map(o => parseInt(o).toString(16).padStart(2, '0').toUpperCase()).join('');
+                    batchResults.push(`${ip} → ${binary}`);
+                } else if (validateIPv6(ip)) {
+                    isValid = true;
+                    const expanded = expandIPv6(ip);
+                    const segments = expanded.split(':');
+                    binary = segments.map(s => parseInt(s, 16).toString(2).padStart(16, '0')).join('');
+                    hex = expanded.replace(/:/g, '').toUpperCase();
+                    batchResults.push(`${ip} → ${binary}`);
+                }
+
+                tableHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${ip}</td>
+                        <td style="font-size: 0.75rem; word-break: break-all;">${isValid ? binary : `<span style="color: var(--danger-color);">${labels.invalid}</span>`}</td>
+                        <td>${isValid ? hex : `<span style="color: var(--danger-color);">${labels.invalid}</span>`}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += '</tbody></table>';
+
+            lastBinaryResult = batchResults.join('\n');
+
+            const resultsDiv = document.getElementById('batchResults');
+            resultsDiv.innerHTML = tableHTML;
+            resultsDiv.classList.add('show');
+        }
+
+        function copyBatchResult() {
+            if (lastBinaryResult) {
+                copyToClipboard(lastBinaryResult);
+            } else {
+                alert(currentLang === 'id' ? 'Belum ada hasil konversi!' : 'No conversion result yet!');
+            }
+        }
+
+        function resetBatch() {
+            document.getElementById('batchInput').value = '';
+            document.getElementById('batchResults').classList.remove('show');
+            lastBinaryResult = '';
+        }
+
+        // Hex Converter
+        function setHexTab(tab) {
+            currentHexTab = tab;
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            if (tab === 'ipToHex') {
+                buttons[0].classList.add('active');
+                document.getElementById('ipToHexTab').style.display = 'block';
+                document.getElementById('hexToIpTab').style.display = 'none';
+            } else {
+                buttons[1].classList.add('active');
+                document.getElementById('ipToHexTab').style.display = 'none';
+                document.getElementById('hexToIpTab').style.display = 'block';
+            }
+        }
+
+        function convertHex() {
+            if (currentHexTab === 'ipToHex') {
+                convertIPToHex();
+            } else {
+                convertHexToIP();
+            }
+        }
+
+        function convertIPToHex() {
+            const ip = document.getElementById('ipToHexInput').value.trim();
+            let hex = '';
+            let binary = '';
+            let type = '';
+            
+            if (validateIPv4(ip)) {
+                type = 'IPv4';
+                const octets = ip.split('.');
+                hex = octets.map(o => parseInt(o).toString(16).padStart(2, '0').toUpperCase()).join('');
+                binary = octets.map(o => parseInt(o).toString(2).padStart(8, '0')).join('');
+            } else if (validateIPv6(ip)) {
+                type = 'IPv6';
+                const expanded = expandIPv6(ip);
+                hex = expanded.replace(/:/g, '').toUpperCase();
+                const segments = expanded.split(':');
+                binary = segments.map(s => parseInt(s, 16).toString(2).padStart(16, '0')).join('');
+            } else {
+                alert(currentLang === 'id' ? 'Format IP tidak valid!' : 'Invalid IP format!');
+                return;
+            }
+
+            lastHexResult = hex;
+
+            const labels = currentLang === 'id' ? {
+                title: 'Hasil Konversi IP → Hexadecimal',
+                type: 'Type',
+                ip: 'IP Address',
+                hex: 'Hexadecimal',
+                binary: 'Binary'
+            } : {
+                title: 'IP → Hexadecimal Conversion Result',
+                type: 'Type',
+                ip: 'IP Address',
+                hex: 'Hexadecimal',
+                binary: 'Binary'
+            };
+
+            const resultsHTML = `
+                <h3>${labels.title}</h3>
+                <div class="result-item">
+                    <span class="result-label">${labels.type}</span>
+                    <span class="result-value">${type}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.ip}</span>
+                    <span class="result-value">${ip}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.hex}</span>
+                    <span class="result-value">${hex}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.binary}</span>
+                    <span class="result-value" style="font-size: 0.8rem;">${binary}</span>
+                </div>
+            `;
+
+            const resultsDiv = document.getElementById('hexResults');
+            resultsDiv.innerHTML = resultsHTML;
+            resultsDiv.classList.add('show');
+        }
+
+        function convertHexToIP() {
+            const hex = document.getElementById('hexToIpInput').value.trim().replace(/[^0-9a-fA-F]/g, '');
+            let ip = '';
+            let binary = '';
+            let type = '';
+
+            if (hex.length === 8) {
+                // IPv4
+                type = 'IPv4';
+                const octets = [];
+                for (let i = 0; i < 8; i += 2) {
+                    octets.push(parseInt(hex.substring(i, i + 2), 16));
+                }
+                ip = octets.join('.');
+                binary = octets.map(o => o.toString(2).padStart(8, '0')).join('');
+            } else if (hex.length === 32) {
+                // IPv6
+                type = 'IPv6';
+                const segments = [];
+                for (let i = 0; i < 32; i += 4) {
+                    segments.push(hex.substring(i, i + 4).toLowerCase());
+                }
+                const ipv6Full= segments.join(':');
+                
+                // Compress IPv6
+                ip = ipv6Full.replace(/\b0+/g, '0');
+                ip = ip.replace(/\b0(:\b0)+/g, '::');
+                
+                binary = segments.map(s => parseInt(s, 16).toString(2).padStart(16, '0')).join('');
+            } else {
+                alert(currentLang === 'id' ? 'Hexadecimal harus 8 karakter (IPv4) atau 32 karakter (IPv6)!' : 'Hexadecimal must be 8 characters (IPv4) or 32 characters (IPv6)!');
+                return;
+            }
+
+            lastIPResult = ip;
+
+            const labels = currentLang === 'id' ? {
+                title: 'Hasil Konversi Hexadecimal → IP',
+                type: 'Type',
+                hex: 'Hexadecimal',
+                ip: 'IP Address',
+                binary: 'Binary'
+            } : {
+                title: 'Hexadecimal → IP Conversion Result',
+                type: 'Type',
+                hex: 'Hexadecimal',
+                ip: 'IP Address',
+                binary: 'Binary'
+            };
+
+            const resultsHTML = `
+                <h3>${labels.title}</h3>
+                <div class="result-item">
+                    <span class="result-label">${labels.type}</span>
+                    <span class="result-value">${type}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.hex}</span>
+                    <span class="result-value">${hex}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.ip}</span>
+                    <span class="result-value">${ip}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.binary}</span>
+                    <span class="result-value" style="font-size: 0.8rem;">${binary}</span>
+                </div>
+            `;
+
+            const resultsDiv = document.getElementById('hexResults');
+            resultsDiv.innerHTML = resultsHTML;
+            resultsDiv.classList.add('show');
+        }
+
+        function copyHexResult() {
+            if (lastHexResult || lastIPResult) {
+                copyToClipboard(lastHexResult || lastIPResult);
+            } else {
+                alert(currentLang === 'id' ? 'Belum ada hasil konversi!' : 'No conversion result yet!');
+            }
+        }
+
+        function resetHex() {
+            document.getElementById('ipToHexInput').value = '';
+            document.getElementById('hexToIpInput').value = '';
+            document.getElementById('hexResults').classList.remove('show');
+            lastHexResult = '';
+            lastIPResult = '';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            initLanguage();
+        });
+    </script>
+</body>
+</html>

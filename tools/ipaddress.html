@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TMA - IP Address Multi Tools</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #06b6d4;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        [data-theme="dark"] {
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --border-color: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .navbar {
+            background-color: var(--bg-card);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-primary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle, .lang-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover, .lang-toggle:hover {
+            transform: scale(1.1);
+            background: var(--bg-primary);
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 7rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            color: var(--text-primary);
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-secondary);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .tool-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tool-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .tool-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .calculator-section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: none;
+            animation: slideIn 0.5s ease;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .calculator-section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tool-button {
+            flex: 1;
+            min-width: 150px;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .tool-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .tool-button.secondary {
+            background: linear-gradient(135deg, var(--danger-color), #dc2626);
+        }
+
+        .results-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .results-container.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        .result-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .result-value {
+            color: var(--text-secondary);
+            font-family: 'Courier New', monospace;
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 5px;
+        }
+
+        .info-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            color: var(--text-primary);
+        }
+
+        .info-box i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .copy-button {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .copy-button:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-content {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+
+            .nav-actions {
+                order: 3;
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .back-button {
+                flex: 1;
+            }
+
+            .container {
+                margin-top: 10rem;
+                padding: 0 1rem;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .tool-button {
+                width: 100%;
+            }
+
+            table {
+                font-size: 0.85rem;
+                display: block;
+                overflow-x: auto;
+            }
+
+            th, td {
+                padding: 0.5rem;
+                white-space: nowrap;
+            }
+
+            .result-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .result-value {
+                width: 100%;
+                word-break: break-all;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-network-wired"></i>
+                <h1 data-id="TMA IP Tools" data-en="TMA IP Tools">TMA IP Tools</h1>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="lang-toggle" onclick="toggleLanguage()" title="Change Language">
+                    <span>EN</span>
+                </button>
+                <button class="back-button" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    <span data-id="Kembali" data-en="Back">Kembali</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="hero">
+            <h1>
+                <i class="fas fa-tools"></i> 
+                <span data-id="IP Address Multi Tools" data-en="IP Address Multi Tools">IP Address Multi Tools</span>
+            </h1>
+            <p data-id="Toolkit lengkap untuk analisis dan perhitungan IP Address" data-en="Complete toolkit for IP Address analysis and calculations">
+                Toolkit lengkap untuk analisis dan perhitungan IP Address
+            </p>
+        </section>
+
+        <div class="tools-grid" id="toolsGrid">
+            <div class="tool-card" onclick="showTool('ipCalculator')">
+                <i class="fas fa-calculator"></i>
+                <h3 data-id="IP Calculator" data-en="IP Calculator">IP Calculator</h3>
+                <p data-id="Hitung subnet mask, host, dan informasi jaringan lengkap" data-en="Calculate subnet mask, hosts, and complete network information">
+                    Hitung subnet mask, host, dan informasi jaringan lengkap
+                </p>
+            </div>
+
+            <div class="tool-card" onclick="showTool('blockCalculator')">
+                <i class="fas fa-cubes"></i>
+                <h3 data-id="Block Calculator" data-en="Block Calculator">Block Calculator</h3>
+                <p data-id="Bagi jaringan menjadi beberapa blok subnet" data-en="Divide network into multiple subnet blocks">
+                    Bagi jaringan menjadi beberapa blok subnet
+                </p>
+            </div>
+
+            <div class="tool-card" onclick="showTool('ipFinder')">
+                <i class="fas fa-search"></i>
+                <h3 data-id="IP Block Finder" data-en="IP Block Finder">IP Block Finder</h3>
+                <p data-id="Cari tahu IP termasuk dalam blok subnet mana" data-en="Find which subnet block an IP belongs to">
+                    Cari tahu IP termasuk dalam blok subnet mana
+                </p>
+            </div>
+
+            <div class="tool-card" onclick="showTool('cidrConverter')">
+                <i class="fas fa-exchange-alt"></i>
+                <h3 data-id="CIDR Converter" data-en="CIDR Converter">CIDR Converter</h3>
+                <p data-id="Konversi antara CIDR, Subnet Mask, dan Wildcard" data-en="Convert between CIDR, Subnet Mask, and Wildcard">
+                    Konversi antara CIDR, Subnet Mask, dan Wildcard
+                </p>
+            </div>
+
+            <div class="tool-card" onclick="showTool('ipRange')">
+                <i class="fas fa-list-ol"></i>
+                <h3 data-id="IP Range Generator" data-en="IP Range Generator">IP Range Generator</h3>
+                <p data-id="Generate daftar semua IP dalam rentang tertentu" data-en="Generate list of all IPs in a specific range">
+                    Generate daftar semua IP dalam rentang tertentu
+                </p>
+            </div>
+
+            <div class="tool-card" onclick="showTool('vlsm')">
+                <i class="fas fa-sitemap"></i>
+                <h3 data-id="VLSM Calculator" data-en="VLSM Calculator">VLSM Calculator</h3>
+                <p data-id="Hitung Variable Length Subnet Mask" data-en="Calculate Variable Length Subnet Mask">
+                    Hitung Variable Length Subnet Mask
+                </p>
+            </div>
+        </div>
+
+        <!-- IP Calculator -->
+        <div id="ipCalculator" class="calculator-section">
+            <h2><i class="fas fa-calculator"></i> <span data-id="IP Calculator" data-en="IP Calculator">IP Calculator</span></h2>
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span data-id="Masukkan IP Address dan CIDR untuk mendapatkan informasi lengkap tentang subnet" data-en="Enter IP Address and CIDR to get complete subnet information">
+                    Masukkan IP Address dan CIDR untuk mendapatkan informasi lengkap tentang subnet
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label data-id="IP Address" data-en="IP Address">IP Address</label>
+                <input type="text" id="ipCalcIP" placeholder="192.168.4.10">
+            </div>
+
+            <div class="form-group">
+                <label data-id="CIDR / Prefix Length" data-en="CIDR / Prefix Length">CIDR / Prefix Length</label>
+                <input type="number" id="ipCalcCIDR" placeholder="24" min="0" max="32">
+            </div>
+
+            <div class="button-group">
+                <button class="tool-button" onclick="calculateIP()">
+                    <i class="fas fa-play"></i>
+                    <span data-id="Hitung" data-en="Calculate">Hitung</span>
+                </button>
+                <button class="tool-button secondary" onclick="resetIPCalc()">
+                    <i class="fas fa-redo"></i>
+                    <span data-id="Reset" data-en="Reset">Reset</span>
+                </button>
+            </div>
+
+            <div id="ipCalcResults" class="results-container"></div>
+        </div>
+
+        <!-- Block Calculator -->
+        <div id="blockCalculator" class="calculator-section">
+            <h2><i class="fas fa-cubes"></i> <span data-id="Block Calculator" data-en="Block Calculator">Block Calculator</span></h2>
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span data-id="Bagi jaringan menjadi beberapa subnet dengan ukuran yang sama" data-en="Divide network into multiple subnets with equal size">
+                    Bagi jaringan menjadi beberapa subnet dengan ukuran yang sama
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label data-id="Network Address" data-en="Network Address">Network Address</label>
+                <input type="text" id="blockIP" placeholder="192.168.4.0">
+            </div>
+
+            <div class="form-group">
+                <label data-id="CIDR" data-en="CIDR">CIDR</label>
+                <input type="number" id="blockCIDR" placeholder="24" min="0" max="32">
+            </div>
+
+            <div class="form-group">
+                <label data-id="Jumlah Block" data-en="Number of Blocks">Jumlah Block</label>
+                <input type="number" id="numBlocks" placeholder="4" min="1">
+            </div>
+
+            <div class="button-group">
+                <button class="tool-button" onclick="calculateBlocks()">
+                    <i class="fas fa-play"></i>
+                    <span data-id="Hitung" data-en="Calculate">Hitung</span>
+                </button>
+                <button class="tool-button secondary" onclick="resetBlockCalc()">
+                    <i class="fas fa-redo"></i>
+                    <span data-id="Reset" data-en="Reset">Reset</span>
+                </button>
+            </div>
+
+            <div id="blockResults" class="results-container"></div>
+        </div>
+
+        <!-- IP Finder -->
+        <div id="ipFinder" class="calculator-section">
+            <h2><i class="fas fa-search"></i> <span data-id="IP Block Finder" data-en="IP Block Finder">IP Block Finder</span></h2>
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span data-id="Cari tahu IP address termasuk dalam subnet/blok mana" data-en="Find which subnet/block an IP address belongs to">
+                    Cari tahu IP address termasuk dalam subnet/blok mana
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label data-id="IP Address yang Dicari" data-en="Search IP Address">IP Address yang Dicari</label>
+                <input type="text" id="searchIP" placeholder="192.168.4.50">
+            </div>
+
+            <div class="form-group">
+                <label data-id="Network Base" data-en="Network Base">Network Base</label>
+                <input type="text" id="finderNetworkIP" placeholder="192.168.4.0">
+            </div>
+
+            <div class="form-group">
+                <label data-id="CIDR per Block" data-en="CIDR per Block">CIDR per Block</label>
+                <input type="number" id="finderCIDR" placeholder="26" min="0" max="32">
+            </div>
+
+            <div class="button-group">
+                <button class="tool-button" onclick="findIPBlock()">
+                    <i class="fas fa-search"></i>
+                    <span data-id="Cari" data-en="Search">Cari</span>
+                </button>
+                <button class="tool-button secondary" onclick="resetFinder()">
+                    <i class="fas fa-redo"></i>
+                    <span data-id="Reset" data-en="Reset">Reset</span>
+                </button>
+            </div>
+
+            <div id="finderResults" class="results-container"></div>
+        </div>
+
+        <!-- CIDR Converter -->
+        <div id="cidrConverter" class="calculator-section">
+            <h2><i class="fas fa-exchange-alt"></i> <span data-id="CIDR Converter" data-en="CIDR Converter">CIDR Converter</span></h2>
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span data-id="Konversi antara notasi CIDR, Subnet Mask, dan Wildcard Mask" data-en="Convert between CIDR notation, Subnet Mask, and Wildcard Mask">
+                    Konversi antara notasi CIDR, Subnet Mask, dan Wildcard Mask
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label data-id="CIDR / Prefix Length" data-en="CIDR / Prefix Length">CIDR / Prefix Length</label>
+                <input type="number" id="cidrInput" placeholder="24" min="0" max="32">
+            </div>
+
+            <div class="button-group">
+                <button class="tool-button" onclick="convertCIDR()">
+                    <i class="fas fa-sync"></i>
+                    <span data-id="Konversi" data-en="Convert">Konversi</span>
+                </button>
+                <button class="tool-button secondary" onclick="resetCIDR()">
+                    <i class="fas fa-redo"></i>
+                    <span data-id="Reset" data-en="Reset">Reset</span>
+                </button>
+            </div>
+
+            <div id="cidrResults" class="results-container"></div>
+        </div>
+
+        <!-- IP Range Generator -->
+        <div id="ipRange" class="calculator-section">
+            <h2><i class="fas fa-list-ol"></i> <span data-id="IP Range Generator" data-en="IP Range Generator">IP Range Generator</span></h2>
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span data-id="Generate daftar semua IP address dalam rentang tertentu (maksimal 254 IP)" data-en="Generate list of all IP addresses in a specific range (max 254 IPs)">
+                    Generate daftar semua IP address dalam rentang tertentu (maksimal 254 IP)
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label data-id="Network Address" data-en="Network Address">Network Address</label>
+                <input type="text" id="rangeIP" placeholder="192.168.4.0">
+            </div>
+
+            <div class="form-group">
+                <label data-id="CIDR" data-en="CIDR">CIDR</label>
+                <input type="number" id="rangeCIDR" placeholder="24" min="0" max="32">
+            </div>
+
+            <div class="button-group">
+                <button class="tool-button" onclick="generateIPRange()">
+                    <i class="fas fa-list"></i>
+                    <span data-id="Generate" data-en="Generate">Generate</span>
+                </button>
+                <button class="tool-button secondary" onclick="resetRange()">
+                    <i class="fas fa-redo"></i>
+                    <span data-id="Reset" data-en="Reset">Reset</span>
+                </button>
+            </div>
+
+            <div id="rangeResults" class="results-container"></div>
+        </div>
+
+        <!-- VLSM Calculator -->
+        <div id="vlsm" class="calculator-section">
+            <h2><i class="fas fa-sitemap"></i> <span data-id="VLSM Calculator" data-en="VLSM Calculator">VLSM Calculator</span></h2>
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span data-id="Hitung Variable Length Subnet Mask berdasarkan jumlah host yang dibutuhkan" data-en="Calculate Variable Length Subnet Mask based on required number of hosts">
+                    Hitung Variable Length Subnet Mask berdasarkan jumlah host yang dibutuhkan
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label data-id="Network Address" data-en="Network Address">Network Address</label>
+                <input type="text" id="vlsmIP" placeholder="192.168.4.0">
+            </div>
+
+            <div class="form-group">
+                <label data-id="Base CIDR" data-en="Base CIDR">Base CIDR</label>
+                <input type="number" id="vlsmBaseCIDR" placeholder="24" min="0" max="32">
+            </div>
+
+            <div class="form-group">
+                <label data-id="Jumlah Host yang Dibutuhkan (pisahkan dengan koma)" data-en="Required Hosts (comma separated)">Jumlah Host yang Dibutuhkan (pisahkan dengan koma)</label>
+                <input type="text" id="vlsmHosts" placeholder="50, 25, 10, 5">
+            </div>
+
+            <div class="button-group">
+                <button class="tool-button" onclick="calculateVLSM()">
+                    <i class="fas fa-calculator"></i>
+                    <span data-id="Hitung" data-en="Calculate">Hitung</span>
+                </button>
+                <button class="tool-button secondary" onclick="resetVLSM()">
+                    <i class="fas fa-redo"></i>
+                    <span data-id="Reset" data-en="Reset">Reset</span>
+                </button>
+            </div>
+
+            <div id="vlsmResults" class="results-container"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = localStorage.getItem('language') || 'id';
+        
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const themeIcon = document.querySelector('.theme-toggle i');
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.body.setAttribute('data-theme', 'dark');
+                if (themeIcon) themeIcon.className = 'fas fa-sun';
+            }
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.querySelector('.theme-toggle i');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        function toggleLanguage() {
+            const langButton = document.querySelector('.lang-toggle span');
+            const elements = document.querySelectorAll('[data-id][data-en]');
+            
+            if (currentLang === 'id') {
+                currentLang = 'en';
+                langButton.textContent = 'ID';
+                elements.forEach(el => {
+                    const newText = el.getAttribute('data-en');
+                    if (newText) el.textContent = newText;
+                });
+            } else {
+                currentLang = 'id';
+                langButton.textContent = 'EN';
+                elements.forEach(el => {
+                    const newText = el.getAttribute('data-id');
+                    if (newText) el.textContent = newText;
+                });
+            }
+            localStorage.setItem('language', currentLang);
+        }
+
+        function initLanguage() {
+            if (currentLang === 'en') {
+                const langButton = document.querySelector('.lang-toggle span');
+                langButton.textContent = 'ID';
+                const elements = document.querySelectorAll('[data-id][data-en]');
+                elements.forEach(el => {
+                    const newText = el.getAttribute('data-en');
+                    if (newText) el.textContent = newText;
+                });
+            }
+        }
+
+        // Utility Functions
+        function ipToNumber(ip) {
+            return ip.split('.').reduce((total, octet) => (total << 8) + parseInt(octet), 0) >>> 0;
+        }
+
+        function numberToIP(num) {
+            return [(num >>> 24) & 255, (num >>> 16) & 255, (num >>> 8) & 255, num & 255].join('.');
+        }
+
+        function validateIP(ip) {
+            const regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+            return regex.test(ip);
+        }
+
+        function cidrToMask(cidr) {
+            const mask = ~((1 << (32 - cidr)) - 1);
+            return numberToIP(mask >>> 0);
+        }
+
+        function cidrToWildcard(cidr) {
+            const wildcard = (1 << (32 - cidr)) - 1;
+            return numberToIP(wildcard >>> 0);
+        }
+
+        function showTool(toolId) {
+            document.querySelectorAll('.calculator-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(toolId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert(currentLang === 'id' ? 'Berhasil disalin!' : 'Copied successfully!');
+            });
+        }
+
+        function getIPClass(ip) {
+            const firstOctet = parseInt(ip.split('.')[0]);
+            if (firstOctet >= 1 && firstOctet <= 126) return 'Class A';
+            if (firstOctet >= 128 && firstOctet <= 191) return 'Class B';
+            if (firstOctet >= 192 && firstOctet <= 223) return 'Class C';
+            if (firstOctet >= 224 && firstOctet <= 239) return 'Class D (Multicast)';
+            if (firstOctet >= 240 && firstOctet <= 255) return 'Class E (Reserved)';
+            return 'Unknown';
+        }
+
+        // IP Calculator
+        function calculateIP() {
+            const ip = document.getElementById('ipCalcIP').value;
+            const cidr = parseInt(document.getElementById('ipCalcCIDR').value);
+            
+            if (!validateIP(ip) || isNaN(cidr) || cidr < 0 || cidr > 32) {
+                alert(currentLang === 'id' ? 'Input tidak valid!' : 'Invalid input!');
+                return;
+            }
+
+            const ipNum = ipToNumber(ip);
+            const maskNum = ~((1 << (32 - cidr)) - 1) >>> 0;
+            const networkNum = (ipNum & maskNum) >>> 0;
+            const broadcastNum = (networkNum | ~maskNum) >>> 0;
+            const firstUsable = networkNum + 1;
+            const lastUsable = broadcastNum - 1;
+            const totalHosts = Math.pow(2, 32 - cidr);
+            const usableHosts = totalHosts - 2;
+
+            const labels = currentLang === 'id' ? {
+                title: 'Informasi Subnet',
+                ipAddress: 'IP Address',
+                network: 'Network Address',
+                broadcast: 'Broadcast Address',
+                firstUsable: 'First Usable IP',
+                lastUsable: 'Last Usable IP',
+                subnetMask: 'Subnet Mask',
+                wildcardMask: 'Wildcard Mask',
+                totalIPs: 'Total IP Addresses',
+                usableIPs: 'Usable IP Addresses',
+                ipClass: 'IP Class'
+            } : {
+                title: 'Subnet Information',
+                ipAddress: 'IP Address',
+                network: 'Network Address',
+                broadcast: 'Broadcast Address',
+                firstUsable: 'First Usable IP',
+                lastUsable: 'Last Usable IP',
+                subnetMask: 'Subnet Mask',
+                wildcardMask: 'Wildcard Mask',
+                totalIPs: 'Total IP Addresses',
+                usableIPs: 'Usable IP Addresses',
+                ipClass: 'IP Class'
+            };
+
+            const resultsHTML = `
+                <h3>${labels.title}</h3>
+                <div class="result-item">
+                    <span class="result-label">${labels.ipAddress}</span>
+                    <span class="result-value">${ip}/${cidr}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.network}</span>
+                    <span class="result-value">${numberToIP(networkNum)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.broadcast}</span>
+                    <span class="result-value">${numberToIP(broadcastNum)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.firstUsable}</span>
+                    <span class="result-value">${numberToIP(firstUsable)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.lastUsable}</span>
+                    <span class="result-value">${numberToIP(lastUsable)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.subnetMask}</span>
+                    <span class="result-value">${cidrToMask(cidr)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.wildcardMask}</span>
+                    <span class="result-value">${cidrToWildcard(cidr)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.totalIPs}</span>
+                    <span class="result-value">${totalHosts.toLocaleString()}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.usableIPs}</span>
+                    <span class="result-value">${usableHosts.toLocaleString()}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.ipClass}</span>
+                    <span class="result-value">${getIPClass(ip)}</span>
+                </div>
+            `;
+
+            const resultsDiv = document.getElementById('ipCalcResults');
+            resultsDiv.innerHTML = resultsHTML;
+            resultsDiv.classList.add('show');
+        }
+
+        function resetIPCalc() {
+            document.getElementById('ipCalcIP').value = '';
+            document.getElementById('ipCalcCIDR').value = '';
+            document.getElementById('ipCalcResults').classList.remove('show');
+        }
+
+        // Block Calculator
+        function calculateBlocks() {
+            const startIP = document.getElementById('blockIP').value;
+            const cidr = parseInt(document.getElementById('blockCIDR').value);
+            const numBlocks = parseInt(document.getElementById('numBlocks').value);
+
+            if (!validateIP(startIP) || isNaN(cidr) || isNaN(numBlocks)) {
+                alert(currentLang === 'id' ? 'Input tidak valid!' : 'Invalid input!');
+                return;
+            }
+
+            const blockSize = Math.pow(2, 32 - cidr);
+            let currentIP = ipToNumber(startIP);
+            
+            const labels = currentLang === 'id' ? {
+                title: `Hasil Pembagian ${numBlocks} Block`,
+                block: 'Block #',
+                network: 'Network',
+                firstUsable: 'First Usable',
+                lastUsable: 'Last Usable',
+                broadcast: 'Broadcast',
+                hosts: 'Hosts'
+            } : {
+                title: `${numBlocks} Block Division Results`,
+                block: 'Block #',
+                network: 'Network',
+                firstUsable: 'First Usable',
+                lastUsable: 'Last Usable',
+                broadcast: 'Broadcast',
+                hosts: 'Hosts'
+            };
+
+            let tableHTML = `
+                <h3>${labels.title}</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>${labels.block}</th>
+                            <th>${labels.network}</th>
+                            <th>${labels.firstUsable}</th>
+                            <th>${labels.lastUsable}</th>
+                            <th>${labels.broadcast}</th>
+                            <th>${labels.hosts}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            for (let i = 0; i < numBlocks; i++) {
+                const networkAddr = numberToIP(currentIP);
+                const firstUsable = numberToIP(currentIP + 1);
+                const lastUsable = numberToIP(currentIP + blockSize - 2);
+                const broadcast = numberToIP(currentIP + blockSize - 1);
+                const usableHosts = blockSize - 2;
+
+                tableHTML += `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${networkAddr}/${cidr}</td>
+                        <td>${firstUsable}</td>
+                        <td>${lastUsable}</td>
+                        <td>${broadcast}</td>
+                        <td>${usableHosts}</td>
+                    </tr>
+                `;
+
+                currentIP += blockSize;
+            }
+
+            tableHTML += '</tbody></table>';
+
+            const resultsDiv = document.getElementById('blockResults');
+            resultsDiv.innerHTML = tableHTML;
+            resultsDiv.classList.add('show');
+        }
+
+        function resetBlockCalc() {
+            document.getElementById('blockIP').value = '';
+            document.getElementById('blockCIDR').value = '';
+            document.getElementById('numBlocks').value = '';
+            document.getElementById('blockResults').classList.remove('show');
+        }
+
+        // IP Finder
+        function findIPBlock() {
+            const searchIP = document.getElementById('searchIP').value;
+            const networkIP = document.getElementById('finderNetworkIP').value;
+            const cidr = parseInt(document.getElementById('finderCIDR').value);
+
+            if (!validateIP(searchIP) || !validateIP(networkIP) || isNaN(cidr)) {
+                alert(currentLang === 'id' ? 'Input tidak valid!' : 'Invalid input!');
+                return;
+            }
+
+            const searchNum = ipToNumber(searchIP);
+            const blockSize = Math.pow(2, 32 - cidr);
+            let baseNum = ipToNumber(networkIP);
+            let blockNumber = 0;
+            let found = false;
+            let blockInfo = {};
+
+            for (let i = 0; i < 1000; i++) {
+                const networkNum = baseNum;
+                const broadcastNum = networkNum + blockSize - 1;
+
+                if (searchNum >= networkNum && searchNum <= broadcastNum) {
+                    found = true;
+                    blockNumber = i + 1;
+                    blockInfo = {
+                        network: numberToIP(networkNum),
+                        first: numberToIP(networkNum + 1),
+                        last: numberToIP(broadcastNum - 1),
+                        broadcast: numberToIP(broadcastNum),
+                        hosts: blockSize - 2
+                    };
+                    break;
+                }
+
+                baseNum += blockSize;
+            }
+
+            let resultsHTML = '';
+            if (found) {
+                const labels = currentLang === 'id' ? {
+                    found: '✅ IP Ditemukan!',
+                    message: `IP Address <strong>${searchIP}</strong> berada di <strong>Block ${blockNumber}</strong>`,
+                    blockNumber: 'Block Number',
+                    network: 'Network Address',
+                    firstUsable: 'First Usable IP',
+                    lastUsable: 'Last Usable IP',
+                    broadcast: 'Broadcast Address',
+                    usableHosts: 'Usable Hosts'
+                } : {
+                    found: '✅ IP Found!',
+                    message: `IP Address <strong>${searchIP}</strong> is in <strong>Block ${blockNumber}</strong>`,
+                    blockNumber: 'Block Number',
+                    network: 'Network Address',
+                    firstUsable: 'First Usable IP',
+                    lastUsable: 'Last Usable IP',
+                    broadcast: 'Broadcast Address',
+                    usableHosts: 'Usable Hosts'
+                };
+
+                resultsHTML = `
+                    <h3>${labels.found}</h3>
+                    <div class="info-box" style="background: var(--bg-secondary); border-left-color: var(--success-color);">
+                        <i class="fas fa-check-circle"></i>
+                        ${labels.message}
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">${labels.blockNumber}</span>
+                        <span class="result-value">Block ${blockNumber}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">${labels.network}</span>
+                        <span class="result-value">${blockInfo.network}/${cidr}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">${labels.firstUsable}</span>
+                        <span class="result-value">${blockInfo.first}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">${labels.lastUsable}</span>
+                        <span class="result-value">${blockInfo.last}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">${labels.broadcast}</span>
+                        <span class="result-value">${blockInfo.broadcast}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">${labels.usableHosts}</span>
+                        <span class="result-value">${blockInfo.hosts.toLocaleString()}</span>
+                    </div>
+                `;
+            } else {
+                const notFound = currentLang === 'id' 
+                    ? `❌ IP Tidak Ditemukan<br><br>IP Address <strong>${searchIP}</strong> tidak ditemukan dalam rentang yang dicari dari base <strong>${networkIP}/${cidr}</strong>`
+                    : `❌ IP Not Found<br><br>IP Address <strong>${searchIP}</strong> not found in the search range from base <strong>${networkIP}/${cidr}</strong>`;
+                
+                resultsHTML = `
+                    <div class="info-box" style="background: var(--bg-secondary); border-left-color: var(--danger-color);">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        ${notFound}
+                    </div>
+                `;
+            }
+
+            const resultsDiv = document.getElementById('finderResults');
+            resultsDiv.innerHTML = resultsHTML;
+            resultsDiv.classList.add('show');
+        }
+
+        function resetFinder() {
+            document.getElementById('searchIP').value = '';
+            document.getElementById('finderNetworkIP').value = '';
+            document.getElementById('finderCIDR').value = '';
+            document.getElementById('finderResults').classList.remove('show');
+        }
+
+        // CIDR Converter
+        function convertCIDR() {
+            const cidr = parseInt(document.getElementById('cidrInput').value);
+
+            if (isNaN(cidr) || cidr < 0 || cidr > 32) {
+                alert(currentLang === 'id' ? 'CIDR harus antara 0-32!' : 'CIDR must be between 0-32!');
+                return;
+            }
+
+            const subnetMask = cidrToMask(cidr);
+            const wildcardMask = cidrToWildcard(cidr);
+            const totalHosts = Math.pow(2, 32 - cidr);
+            const usableHosts = totalHosts - 2;
+
+            const labels = currentLang === 'id' ? {
+                title: `Konversi CIDR /${cidr}`,
+                cidr: 'CIDR Notation',
+                subnetMask: 'Subnet Mask',
+                wildcardMask: 'Wildcard Mask',
+                totalIPs: 'Total IP Addresses',
+                usableIPs: 'Usable IP Addresses',
+                networkBits: 'Network Bits',
+                hostBits: 'Host Bits',
+                binaryMask: 'Binary Subnet Mask'
+            } : {
+                title: `CIDR /${cidr} Conversion`,
+                cidr: 'CIDR Notation',
+                subnetMask: 'Subnet Mask',
+                wildcardMask: 'Wildcard Mask',
+                totalIPs: 'Total IP Addresses',
+                usableIPs: 'Usable IP Addresses',
+                networkBits: 'Network Bits',
+                hostBits: 'Host Bits',
+                binaryMask: 'Binary Subnet Mask'
+            };
+
+            const resultsHTML = `
+                <h3>${labels.title}</h3>
+                <div class="result-item">
+                    <span class="result-label">${labels.cidr}</span>
+                    <span class="result-value">/${cidr}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.subnetMask}</span>
+                    <span class="result-value">${subnetMask}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.wildcardMask}</span>
+                    <span class="result-value">${wildcardMask}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.totalIPs}</span>
+                    <span class="result-value">${totalHosts.toLocaleString()}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.usableIPs}</span>
+                    <span class="result-value">${usableHosts.toLocaleString()}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.networkBits}</span>
+                    <span class="result-value">${cidr} bits</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.hostBits}</span>
+                    <span class="result-value">${32 - cidr} bits</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">${labels.binaryMask}</span>
+                    <span class="result-value">${'1'.repeat(cidr)}${'0'.repeat(32 - cidr)}</span>
+                </div>
+            `;
+
+            const resultsDiv = document.getElementById('cidrResults');
+            resultsDiv.innerHTML = resultsHTML;
+            resultsDiv.classList.add('show');
+        }
+
+        function resetCIDR() {
+            document.getElementById('cidrInput').value = '';
+            document.getElementById('cidrResults').classList.remove('show');
+        }
+
+        // IP Range Generator
+        function generateIPRange() {
+            const networkIP = document.getElementById('rangeIP').value;
+            const cidr = parseInt(document.getElementById('rangeCIDR').value);
+
+            if (!validateIP(networkIP) || isNaN(cidr)) {
+                alert(currentLang === 'id' ? 'Input tidak valid!' : 'Invalid input!');
+                return;
+            }
+
+            const totalHosts = Math.pow(2, 32 - cidr);
+            if (totalHosts > 256) {
+                alert(currentLang === 'id' ? 'Range terlalu besar! Maksimal 256 IP' : 'Range too large! Maximum 256 IPs');
+                return;
+            }
+
+            const networkNum = ipToNumber(networkIP);
+            const broadcastNum = networkNum + totalHosts - 1;
+
+            const labels = currentLang === 'id' ? {
+                title: `IP Range List (Total: ${totalHosts} addresses)`,
+                info: `Menampilkan semua IP dari ${numberToIP(networkNum)} sampai ${numberToIP(broadcastNum)}`,
+                number: '#',
+                ipAddress: 'IP Address',
+                type: 'Type',
+                action: 'Action',
+                network: 'Network',
+                usable: 'Usable',
+                broadcast: 'Broadcast',
+                copy: 'Copy'
+            } : {
+                title: `IP Range List (Total: ${totalHosts} addresses)`,
+                info: `Showing all IPs from ${numberToIP(networkNum)} to ${numberToIP(broadcastNum)}`,
+                number: '#',
+                ipAddress: 'IP Address',
+                type: 'Type',
+                action: 'Action',
+                network: 'Network',
+                usable: 'Usable',
+                broadcast: 'Broadcast',
+                copy: 'Copy'
+            };
+
+            let tableHTML = `
+                <h3>${labels.title}</h3>
+                <div class="info-box">
+                    <i class="fas fa-info-circle"></i>
+                    ${labels.info}
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>${labels.number}</th>
+                            <th>${labels.ipAddress}</th>
+                            <th>${labels.type}</th>
+                            <th>${labels.action}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            for (let i = 0; i < totalHosts; i++) {
+                const currentIP = numberToIP(networkNum + i);
+                let type = labels.usable;
+                if (i === 0) type = labels.network;
+                else if (i === totalHosts - 1) type = labels.broadcast;
+
+                tableHTML += `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${currentIP}</td>
+                        <td>${type}</td>
+                        <td><button class="copy-button" onclick="copyToClipboard('${currentIP}')"><i class="fas fa-copy"></i> ${labels.copy}</button></td>
+                    </tr>
+                `;
+            }
+
+            tableHTML += '</tbody></table>';
+
+            const resultsDiv = document.getElementById('rangeResults');
+            resultsDiv.innerHTML = tableHTML;
+            resultsDiv.classList.add('show');
+        }
+
+        function resetRange() {
+            document.getElementById('rangeIP').value = '';
+            document.getElementById('rangeCIDR').value = '';
+            document.getElementById('rangeResults').classList.remove('show');
+        }
+
+        // VLSM Calculator
+        function calculateVLSM() {
+            const networkIP = document.getElementById('vlsmIP').value;
+            const baseCIDR = parseInt(document.getElementById('vlsmBaseCIDR').value);
+            const hostsInput = document.getElementById('vlsmHosts').value;
+
+            if (!validateIP(networkIP) || isNaN(baseCIDR)) {
+                alert(currentLang === 'id' ? 'Input tidak valid!' : 'Invalid input!');
+                return;
+            }
+
+            const hostRequirements = hostsInput.split(',').map(h => parseInt(h.trim())).filter(h => !isNaN(h));
+            
+            if (hostRequirements.length === 0) {
+                alert(currentLang === 'id' ? 'Masukkan jumlah host yang valid!' : 'Enter valid host numbers!');
+                return;
+            }
+
+            hostRequirements.sort((a, b) => b - a);
+
+            let currentIP = ipToNumber(networkIP);
+            let subnets = [];
+
+            for (let requiredHosts of hostRequirements) {
+                const totalIPs = requiredHosts + 2;
+                const cidr = 32 - Math.ceil(Math.log2(totalIPs));
+                const blockSize = Math.pow(2, 32 - cidr);
+                const usableHosts = blockSize - 2;
+
+                const subnetInfo = {
+                    network: numberToIP(currentIP),
+                    cidr: cidr,
+                    mask: cidrToMask(cidr),
+                    first: numberToIP(currentIP + 1),
+                    last: numberToIP(currentIP + blockSize - 2),
+                    broadcast: numberToIP(currentIP + blockSize - 1),
+                    requiredHosts: requiredHosts,
+                    availableHosts: usableHosts
+                };
+
+                subnets.push(subnetInfo);
+                currentIP += blockSize;
+            }
+
+            const labels = currentLang === 'id' ? {
+                title: 'Hasil Perhitungan VLSM',
+                info: 'Subnet dibagi berdasarkan kebutuhan host (dari yang terbesar ke terkecil)',
+                subnet: 'Subnet',
+                network: 'Network',
+                mask: 'Mask',
+                first: 'First IP',
+                last: 'Last IP',
+                broadcast: 'Broadcast',
+                required: 'Required',
+                available: 'Available'
+            } : {
+                title: 'VLSM Calculation Results',
+                info: 'Subnets divided based on host requirements (largest to smallest)',
+                subnet: 'Subnet',
+                network: 'Network',
+                mask: 'Mask',
+                first: 'First IP',
+                last: 'Last IP',
+                broadcast: 'Broadcast',
+                required: 'Required',
+                available: 'Available'
+            };
+
+            let tableHTML = `
+                <h3>${labels.title}</h3>
+                <div class="info-box">
+                    <i class="fas fa-info-circle"></i>
+                    ${labels.info}
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>${labels.subnet}</th>
+                            <th>${labels.network}</th>
+                            <th>${labels.mask}</th>
+                            <th>${labels.first}</th>
+                            <th>${labels.last}</th>
+                            <th>${labels.broadcast}</th>
+                            <th>${labels.required}</th>
+                            <th>${labels.available}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            subnets.forEach((subnet, index) => {
+                tableHTML += `
+                    <tr>
+                        <td>${labels.subnet} ${index + 1}</td>
+                        <td>${subnet.network}/${subnet.cidr}</td>
+                        <td>${subnet.mask}</td>
+                        <td>${subnet.first}</td>
+                        <td>${subnet.last}</td>
+                        <td>${subnet.broadcast}</td>
+                        <td>${subnet.requiredHosts}</td>
+                        <td>${subnet.availableHosts}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += '</tbody></table>';
+
+            const resultsDiv = document.getElementById('vlsmResults');
+            resultsDiv.innerHTML = tableHTML;
+            resultsDiv.classList.add('show');
+        }
+
+        function resetVLSM() {
+            document.getElementById('vlsmIP').value = '';
+            document.getElementById('vlsmBaseCIDR').value = '';
+            document.getElementById('vlsmHosts').value = '';
+            document.getElementById('vlsmResults').classList.remove('show');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            initLanguage();
+        });
+    </script>
+</body>
+</html>

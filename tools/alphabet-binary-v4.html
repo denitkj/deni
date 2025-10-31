@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TMA - Alphabet Binary Converter</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #06b6d4;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        [data-theme="dark"] {
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --border-color: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .navbar {
+            background-color: var(--bg-card);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-primary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle, .lang-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover, .lang-toggle:hover {
+            transform: scale(1.1);
+            background: var(--bg-primary);
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 7rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            color: var(--text-primary);
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-secondary);
+        }
+
+        .converter-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            animation: slideIn 0.5s ease;
+        }
+
+        .conversion-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .conversion-type {
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .type-label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            display: inline-block;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .type-label.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .switch-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .switch-button:hover {
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: var(--shadow-md);
+        }
+
+        .switch-button:active {
+            transform: rotate(180deg) scale(0.95);
+        }
+
+        .switch-button i {
+            font-size: 1.5rem;
+        }
+
+        .input-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .input-area {
+            width: 100%;
+            min-height: 180px;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+        }
+
+        .input-area:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .input-area::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        .char-count {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            padding: 0.25rem 0.5rem;
+            border-radius: 5px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 0.6rem 1.2rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .action-btn:hover {
+            background: var(--bg-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+        }
+
+        .action-btn.primary:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .action-btn.danger {
+            background: linear-gradient(135deg, var(--danger-color), #dc2626);
+            color: white;
+            border: none;
+        }
+
+        .action-btn.success {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            color: white;
+            border: none;
+        }
+
+        .output-section {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .output-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .output-content {
+            font-family: 'Courier New', monospace;
+            color: var(--text-primary);
+            line-height: 1.8;
+            word-break: break-all;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .info-card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .info-card-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .info-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .encoding-options {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .encoding-btn {
+            padding: 0.6rem 1.2rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .encoding-btn.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .encoding-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .binary-group {
+            display: inline-block;
+            margin: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--bg-primary);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .example-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .example-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .example-item {
+            padding: 0.75rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .example-item:hover {
+            transform: translateX(5px);
+            background: var(--bg-primary);
+        }
+
+        .example-text {
+            font-family: 'Courier New', monospace;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-content {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+
+            .nav-actions {
+                order: 3;
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .back-button {
+                flex: 1;
+            }
+
+            .container {
+                margin-top: 10rem;
+                padding: 0 1rem;
+            }
+
+            .conversion-header {
+                flex-direction: column;
+            }
+
+            .switch-button {
+                transform: rotate(90deg);
+            }
+
+            .switch-button:hover {
+                transform: rotate(270deg) scale(1.1);
+            }
+
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .encoding-options {
+                flex-direction: column;
+            }
+
+            .encoding-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-font"></i>
+                <h1 data-id="TMA Binary Converter" data-en="TMA Binary Converter">TMA Binary Converter</h1>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="lang-toggle" onclick="toggleLanguage()" title="Change Language">
+                    <span>EN</span>
+                </button>
+                <button class="back-button" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    <span data-id="Kembali" data-en="Back">Kembali</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="hero">
+            <h1>
+                <i class="fas fa-exchange-alt"></i> 
+                <span data-id="Text ↔ Binary Converter" data-en="Text ↔ Binary Converter">Text ↔ Binary Converter</span>
+            </h1>
+            <p data-id="Konversi text/alphabet ke binary dan sebaliknya dengan mudah dan cepat" data-en="Convert text/alphabet to binary and vice versa easily and quickly">
+                Konversi text/alphabet ke binary dan sebaliknya dengan mudah dan cepat
+            </p>
+        </section>
+
+        <div class="converter-container">
+            <!-- Conversion Header with Switch -->
+            <div class="conversion-header">
+                <div class="conversion-type">
+                    <div class="type-label active" id="sourceLabel">
+                        <i class="fas fa-font"></i>
+                        <span data-id="Text/Alphabet" data-en="Text/Alphabet">Text/Alphabet</span>
+                    </div>
+                </div>
+                
+                <button class="switch-button" onclick="switchConversion()" title="Switch Conversion">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
+                
+                <div class="conversion-type">
+                    <div class="type-label" id="targetLabel">
+                        <i class="fas fa-code"></i>
+                        <span data-id="Binary" data-en="Binary">Binary</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Encoding Options -->
+            <div class="encoding-options">
+                <button class="encoding-btn active" onclick="setEncoding('utf8')" data-encoding="utf8">
+                    <i class="fas fa-check-circle"></i>
+                    <span data-id="UTF-8 (Recommended)" data-en="UTF-8 (Recommended)">UTF-8 (Recommended)</span>
+                </button>
+                <button class="encoding-btn" onclick="setEncoding('ascii')" data-encoding="ascii">
+                    <i class="fas fa-font"></i>
+                    <span data-id="ASCII (English Only)" data-en="ASCII (English Only)">ASCII (English Only)</span>
+                </button>
+                <button class="encoding-btn" onclick="setEncoding('unicode')" data-encoding="unicode">
+                    <i class="fas fa-globe"></i>
+                    <span data-id="Unicode (16-bit)" data-en="Unicode (16-bit)">Unicode (16-bit)</span>
+                </button>
+            </div>
+
+            <!-- Input Section -->
+            <div class="input-section">
+                <div class="input-label">
+                    <i class="fas fa-edit"></i>
+                    <span data-id="Input:" data-en="Input:">Input:</span>
+                </div>
+                <div class="input-wrapper">
+                    <textarea 
+                        class="input-area" 
+                        id="inputText" 
+                        placeholder="Masukkan text atau binary di sini..."
+                        oninput="autoConvert()"
+                    ></textarea>
+                    <div class="char-count" id="charCount">0</div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-btn primary" onclick="convert()">
+                    <i class="fas fa-sync-alt"></i>
+                    <span data-id="Konversi Sekarang" data-en="Convert Now">Konversi Sekarang</span>
+                </button>
+                <button class="action-btn success" onclick="copyOutput()">
+                    <i class="fas fa-copy"></i>
+                    <span data-id="Copy Hasil" data-en="Copy Result">Copy Hasil</span>
+                </button>
+                <button class="action-btn" onclick="downloadResult()">
+                    <i class="fas fa-download"></i>
+                    <span data-id="Download" data-en="Download">Download</span>
+                </button>
+                <button class="action-btn danger" onclick="clearAll()">
+                    <i class="fas fa-trash"></i>
+                    <span data-id="Clear" data-en="Clear">Clear</span>
+                </button>
+            </div>
+
+            <!-- Output Section -->
+            <div class="output-section" id="outputSection" style="display: none;">
+                <div class="output-label">
+                    <i class="fas fa-check-circle"></i>
+                    <span data-id="Hasil Konversi:" data-en="Conversion Result:">Hasil Konversi:</span>
+                </div>
+                <div class="output-content" id="outputText"></div>
+                
+                <!-- Stats Bar -->
+                <div class="stats-bar" id="statsBar">
+                    <div class="stat-item">
+                        <span class="stat-label" data-id="Karakter" data-en="Characters">Karakter</span>
+                        <span class="stat-value" id="charStats">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label" data-id="Kata" data-en="Words">Kata</span>
+                        <span class="stat-value" id="wordStats">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label" data-id="Binary Groups" data-en="Binary Groups">Binary Groups</span>
+                        <span class="stat-value" id="binaryStats">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label" data-id="Bytes" data-en="Bytes">Bytes</span>
+                        <span class="stat-value" id="byteStats">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example Section -->
+            <div class="example-section">
+                <div class="example-title">
+                    <i class="fas fa-lightbulb"></i>
+                    <span data-id="Contoh Cepat (Klik untuk mencoba):" data-en="Quick Examples (Click to try):">Contoh Cepat (Klik untuk mencoba):</span>
+                </div>
+                <div class="example-item" onclick="loadExample('Hello World')">
+                    <div class="example-text">Hello World</div>
+                </div>
+                <div class="example-item" onclick="loadExample('01001000 01100101 01101100 01101100 01101111')">
+                    <div class="example-text">01001000 01100101 01101100 01101100 01101111</div>
+                </div>
+                <div class="example-item" onclick="loadExample('Alphabet Binary Converter')">
+                    <div class="example-text">Alphabet Binary Converter</div>
+                </div>
+                <div class="example-item" onclick="loadExample('Binary: 01000010 01101001 01101110 01100001 01110010 01111001')">
+                    <div class="example-text">Binary: 01000010 01101001 01101110 01100001 01110010 01111001</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Cards -->
+        <div class="info-cards">
+            <div class="info-card">
+                <div class="info-card-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3 data-id="Real-time Conversion" data-en="Real-time Conversion">Real-time Conversion</h3>
+                <p data-id="Konversi otomatis saat Anda mengetik untuk hasil yang instant dan responsif" data-en="Automatic conversion as you type for instant and responsive results">
+                    Konversi otomatis saat Anda mengetik untuk hasil yang instant dan responsif
+                </p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-icon">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <h3 data-id="Multiple Encoding" data-en="Multiple Encoding">Multiple Encoding</h3>
+                <p data-id="Support UTF-8, ASCII, dan Unicode untuk berbagai kebutuhan konversi text" data-en="Support UTF-8, ASCII, and Unicode for various text conversion needs">
+                    Support UTF-8, ASCII, dan Unicode untuk berbagai kebutuhan konversi text
+                </p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <h3 data-id="Bidirectional" data-en="Bidirectional">Bidirectional</h3>
+                <p data-id="Switch mudah antara Text ke Binary dan Binary ke Text dengan satu klik" data-en="Easy switch between Text to Binary and Binary to Text with one click">
+                    Switch mudah antara Text ke Binary dan Binary ke Text dengan satu klik
+                </p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 data-id="Privacy First" data-en="Privacy First">Privacy First</h3>
+                <p data-id="Semua konversi dilakukan di browser Anda, data tidak disimpan atau dikirim ke server" data-en="All conversions done in your browser, no data stored or sent to server">
+                    Semua konversi dilakukan di browser Anda, data tidak disimpan atau dikirim ke server
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = localStorage.getItem('language') || 'id';
+        let isTextToBinary = true;
+        let currentEncoding = 'utf8';
+        
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const themeIcon = document.querySelector('.theme-toggle i');
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.body.setAttribute('data-theme', 'dark');
+                if (themeIcon) themeIcon.className = 'fas fa-sun';
+            }
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.querySelector('.theme-toggle i');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        function toggleLanguage() {
+            const langButton = document.querySelector('.lang-toggle span');
+            const elements = document.querySelectorAll('[data-id][data-en]');
+            
+            if (currentLang === 'id') {
+                currentLang = 'en';
+                langButton.textContent = 'ID';
+                elements.forEach(el => {
+                    const newText = el.getAttribute('data-en');
+                    if (newText) el.textContent = newText;
+                });
+            } else {
+                currentLang = 'id';
+                langButton.textContent = 'EN';
+                elements.forEach(el => {
+                    const newText = el.getAttribute('data-id');
+                    if (newText) el.textContent = newText;
+                });
+            }
+            localStorage.setItem('language', currentLang);
+            updatePlaceholder();
+        }
+
+        function initLanguage() {
+            if (currentLang === 'en') {
+                const langButton = document.querySelector('.lang-toggle span');
+                langButton.textContent = 'ID';
+                const elements = document.querySelectorAll('[data-id][data-en]');
+                elements.forEach(el => {
+                    const newText = el.getAttribute('data-en');
+                    if (newText) el.textContent = newText;
+                });
+            }
+            updatePlaceholder();
+        }
+
+        function updatePlaceholder() {
+            const input= document.getElementById('inputText');
+            if (isTextToBinary) {
+                input.placeholder = currentLang === 'id' ? 
+                    'Masukkan text/alphabet di sini...\nContoh: Hello World' : 
+                    'Enter text/alphabet here...\nExample: Hello World';
+            } else {
+                input.placeholder = currentLang === 'id' ? 
+                    'Masukkan binary di sini...\nContoh: 01001000 01100101 01101100 01101100 01101111' : 
+                    'Enter binary here...\nExample: 01001000 01100101 01101100 01101100 01101111';
+            }
+        }
+
+        function switchConversion() {
+            isTextToBinary = !isTextToBinary;
+            
+            const sourceLabel = document.getElementById('sourceLabel');
+            const targetLabel = document.getElementById('targetLabel');
+            
+            // Toggle active class
+            sourceLabel.classList.toggle('active');
+            targetLabel.classList.toggle('active');
+            
+            // Update labels
+            const sourceSpan = sourceLabel.querySelector('span');
+            const targetSpan = targetLabel.querySelector('span');
+            
+            if (isTextToBinary) {
+                sourceSpan.setAttribute('data-id', 'Text/Alphabet');
+                sourceSpan.setAttribute('data-en', 'Text/Alphabet');
+                targetSpan.setAttribute('data-id', 'Binary');
+                targetSpan.setAttribute('data-en', 'Binary');
+                sourceLabel.querySelector('i').className = 'fas fa-font';
+                targetLabel.querySelector('i').className = 'fas fa-code';
+            } else {
+                sourceSpan.setAttribute('data-id', 'Binary');
+                sourceSpan.setAttribute('data-en', 'Binary');
+                targetSpan.setAttribute('data-id', 'Text/Alphabet');
+                targetSpan.setAttribute('data-en', 'Text/Alphabet');
+                sourceLabel.querySelector('i').className = 'fas fa-code';
+                targetLabel.querySelector('i').className = 'fas fa-font';
+            }
+            
+            // Update text based on current language
+            if (currentLang === 'id') {
+                sourceSpan.textContent = sourceSpan.getAttribute('data-id');
+                targetSpan.textContent = targetSpan.getAttribute('data-id');
+            } else {
+                sourceSpan.textContent = sourceSpan.getAttribute('data-en');
+                targetSpan.textContent = targetSpan.getAttribute('data-en');
+            }
+            
+            // Swap input and output content
+            const input = document.getElementById('inputText');
+            const output = document.getElementById('outputText');
+            
+            if (output.textContent) {
+                const temp = output.textContent;
+                input.value = temp;
+                output.textContent = '';
+            } else {
+                input.value = '';
+            }
+            
+            updatePlaceholder();
+            updateCharCount();
+            
+            // Auto convert if there's content
+            if (input.value.trim()) {
+                convert();
+            } else {
+                document.getElementById('outputSection').style.display = 'none';
+            }
+        }
+
+        function setEncoding(encoding) {
+            currentEncoding = encoding;
+            
+            // Update active button
+            document.querySelectorAll('.encoding-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-encoding="${encoding}"]`).classList.add('active');
+            
+            // Reconvert if there's input
+            if (document.getElementById('inputText').value.trim()) {
+                convert();
+            }
+        }
+
+        function textToBinary(text) {
+            let result = [];
+            
+            for (let i = 0; i < text.length; i++) {
+                let charCode = text.charCodeAt(i);
+                let binary = '';
+                
+                switch(currentEncoding) {
+                    case 'ascii':
+                        if (charCode > 127) {
+                            // Non-ASCII character, use UTF-8 encoding instead
+                            binary = charCode.toString(2).padStart(8, '0');
+                        } else {
+                            binary = charCode.toString(2).padStart(8, '0');
+                        }
+                        break;
+                    case 'utf8':
+                        // Simple UTF-8 (for BMP characters)
+                        if (charCode < 128) {
+                            binary = charCode.toString(2).padStart(8, '0');
+                        } else {
+                            binary = charCode.toString(2).padStart(16, '0');
+                        }
+                        break;
+                    case 'unicode':
+                        binary = charCode.toString(2).padStart(16, '0');
+                        break;
+                }
+                
+                result.push(binary);
+            }
+            
+            return result;
+        }
+
+        function binaryToText(binary) {
+            // Remove extra spaces and split
+            const binaryArray = binary.trim().replace(/\s+/g, ' ').split(' ');
+            let result = '';
+            
+            for (let bin of binaryArray) {
+                // Skip empty strings
+                if (!bin) continue;
+                
+                // Validate binary
+                if (!/^[01]+$/.test(bin)) {
+                    continue;
+                }
+                
+                const charCode = parseInt(bin, 2);
+                
+                // Validate char code
+                if (isNaN(charCode) || charCode > 1114111) {
+                    continue;
+                }
+                
+                try {
+                    result += String.fromCharCode(charCode);
+                } catch (e) {
+                    continue;
+                }
+            }
+            
+            return result;
+        }
+
+        function convert() {
+            const input = document.getElementById('inputText').value;
+            const outputSection = document.getElementById('outputSection');
+            const outputText = document.getElementById('outputText');
+            
+            if (!input.trim()) {
+                outputSection.style.display = 'none';
+                return;
+            }
+            
+            let result = '';
+            
+            try {
+                if (isTextToBinary) {
+                    // Text to Binary
+                    const binaryArray = textToBinary(input);
+                    result = binaryArray.join(' ');
+                    
+                    // Display with grouping
+                    outputText.innerHTML = binaryArray.map(bin => 
+                        `<span class="binary-group">${bin}</span>`
+                    ).join(' ');
+                    
+                    // Update stats
+                    updateStats(input, binaryArray, true);
+                } else {
+                    // Binary to Text
+                    result = binaryToText(input);
+                    outputText.textContent = result;
+                    
+                    // Update stats
+                    const binaryArray = input.trim().split(/\s+/).filter(b => b);
+                    updateStats(result, binaryArray, false);
+                }
+                
+                outputSection.style.display = 'block';
+            } catch (error) {
+                outputText.textContent = currentLang === 'id' ? 
+                    'Error: Format input tidak valid!' : 
+                    'Error: Invalid input format!';
+                outputSection.style.display = 'block';
+            }
+        }
+
+        function updateStats(text, binaryArray, isTextInput) {
+            const charStats = document.getElementById('charStats');
+            const wordStats = document.getElementById('wordStats');
+            const binaryStats = document.getElementById('binaryStats');
+            const byteStats = document.getElementById('byteStats');
+            
+            if (isTextInput) {
+                charStats.textContent = text.length;
+                wordStats.textContent = text.trim().split(/\s+/).filter(w => w).length;
+                binaryStats.textContent = binaryArray.length;
+                
+                // Calculate bytes based on encoding
+                let bytes = 0;
+                if (currentEncoding === 'ascii' || currentEncoding === 'utf8') {
+                    bytes = binaryArray.filter(b => b.length === 8).length + 
+                            binaryArray.filter(b => b.length === 16).length * 2;
+                } else {
+                    bytes = binaryArray.length * 2;
+                }
+                byteStats.textContent = bytes;
+            } else {
+                charStats.textContent = text.length;
+                wordStats.textContent = text.trim().split(/\s+/).filter(w => w).length;
+                binaryStats.textContent = binaryArray.length;
+                
+                let bytes = 0;
+                binaryArray.forEach(bin => {
+                    if (bin.length === 8) bytes += 1;
+                    else if (bin.length === 16) bytes += 2;
+                });
+                byteStats.textContent = bytes;
+            }
+        }
+
+        function autoConvert() {
+            updateCharCount();
+            // Add small delay for better performance
+            clearTimeout(window.convertTimeout);
+            window.convertTimeout = setTimeout(() => {
+                convert();
+            }, 300);
+        }
+
+        function updateCharCount() {
+            const input = document.getElementById('inputText').value;
+            const count = input.length;
+            document.getElementById('charCount').textContent = count.toLocaleString();
+        }
+
+        function copyOutput() {
+            const output = document.getElementById('outputText');
+            const text = output.textContent;
+            
+            if (!text) {
+                alert(currentLang === 'id' ? 'Tidak ada hasil untuk dicopy!' : 'No result to copy!');
+                return;
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                // Show success feedback
+                const btn = event.target.closest('.action-btn');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> ' + 
+                    (currentLang === 'id' ? 'Tersalin!' : 'Copied!');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                }, 2000);
+            }).catch(() => {
+                alert(currentLang === 'id' ? 'Gagal menyalin!' : 'Failed to copy!');
+            });
+        }
+
+        function clearAll() {
+            if (confirm(currentLang === 'id' ? 
+                'Apakah Anda yakin ingin menghapus semua data?' : 
+                'Are you sure you want to clear all data?')) {
+                document.getElementById('inputText').value = '';
+                document.getElementById('outputText').textContent = '';
+                document.getElementById('outputSection').style.display = 'none';
+                updateCharCount();
+            }
+        }
+
+        function downloadResult() {
+            const output = document.getElementById('outputText').textContent;
+            
+            if (!output) {
+                alert(currentLang === 'id' ? 'Tidak ada hasil untuk didownload!' : 'No result to download!');
+                return;
+            }
+            
+            const filename = isTextToBinary ? 
+                'binary_output.txt' : 
+                'text_output.txt';
+            
+            const blob = new Blob([output], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // Show success message
+            alert(currentLang === 'id' ? 
+                'File berhasil didownload!' : 
+                'File downloaded successfully!');
+        }
+
+        function loadExample(text) {
+            const input = document.getElementById('inputText');
+            
+            // Detect if it's binary or text
+            if (/^[01\s]+$/.test(text)) {
+                // It's binary
+                if (isTextToBinary) {
+                    switchConversion();
+                }
+                input.value = text;
+            } else {
+                // It's text
+                if (!isTextToBinary) {
+                    switchConversion();
+                }
+                input.value = text.replace('Binary: ', '');
+            }
+            
+            updateCharCount();
+            convert();
+            
+            // Scroll to input
+            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            initLanguage();
+            
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                // Ctrl/Cmd + Enter to convert
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    convert();
+                }
+                
+                // Ctrl/Cmd + K to clear
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    clearAll();
+                }
+                
+                // Ctrl/Cmd + S to switch
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    switchConversion();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
